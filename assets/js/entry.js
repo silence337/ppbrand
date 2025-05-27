@@ -276,7 +276,7 @@ class begin {
                 //markers: true,
             },
         });
-        galleryThum.to(galleryList.querySelector('li'), {x:100, y: -150, autoAlpha: 1, ease:'none', stagger: 0.1,});
+        galleryThum.to(galleryList.querySelectorAll('li'), {x:100, y: -150, autoAlpha: 1, ease:'none', stagger: 0.1,});
 
         let galleryPin = gsap.timeline({
             scrollTrigger: {
