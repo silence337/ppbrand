@@ -1,7 +1,7 @@
 import '../scss/index.scss';
 import { promise, ScrollListener, ResizeSet, Debounce, videoObserver } from './utils';
 import gsap from 'gsap';
-import ScrollTrigger from "gsap/ScrollTrigger";
+import ScrollTrigger from 'gsap/ScrollTrigger';
 import ScrollSmoother from 'gsap/ScrollSmoother';
 
 
@@ -23,7 +23,7 @@ class begin {
         this.section4 = this.element('.section4');
         this.section5 = this.element('.section5');
 
-        document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener('DOMContentLoaded', () => {
             this._BindSceneAnimate1();
             this._BindSceneAnimate2();
             this._BindSceneAnimate3();
@@ -56,7 +56,7 @@ class begin {
             },
             scrollTrigger: {
                 trigger: this.section1,
-                start: "top top",
+                start: 'top top',
                 scrub: 1,
                 //markers: true,
                 invalidateOnRefresh: true,
@@ -68,7 +68,7 @@ class begin {
             },
             scrollTrigger: {
                 trigger: this.section1,
-                start: "top -10%",
+                start: 'top -10%',
                 scrub: 1,
                 //markers: true,
                 invalidateOnRefresh: true,
@@ -104,7 +104,7 @@ class begin {
             top: 0,
             scrollTrigger: {
                 trigger: this.section1,
-                start: "bottom",
+                start: 'bottom',
                 end: 'bottom 100%',
                 pin:round,
                 endTrigger: this.section2,
@@ -145,7 +145,7 @@ class begin {
         let liner = gsap.timeline({
             scrollTrigger: {
                 trigger: this.section2,
-                start: "top top", 
+                start: 'top top', 
                 end: 'bottom 100%',
                 scrub: 5, 
                 //markers: true,
@@ -161,9 +161,9 @@ class begin {
 
         let gallery = gsap.timeline({
             scrollTrigger: {
-                trigger: ".section2",
-                start: "top", 
-                end: "bottom 120%",
+                trigger: '.section2',
+                start: 'top', 
+                end: 'bottom 120%',
                 scrub: 4, 
                 invalidateOnRefresh: true,
                 //markers: true,
@@ -188,7 +188,7 @@ class begin {
         let tlBack = gsap.timeline({
             scrollTrigger: {
                 trigger: this.section3,
-                start: "0 bottom", 
+                start: '0 bottom', 
                 end: '20%',
                 scrub: 5, 
                 //markers: true,
@@ -200,7 +200,7 @@ class begin {
         let tltypo = gsap.timeline({
             scrollTrigger: {
                 trigger: this.section3,
-                start: "10% bottom", 
+                start: '10% bottom', 
                 end: 'bottom bottom',
                 scrub: 5, 
                 //markers: true,
@@ -227,7 +227,7 @@ class begin {
         let boxAnimate = gsap.timeline({
             scrollTrigger: {
                 trigger: test,
-                start: "top top", 
+                start: 'top top', 
                 end: 'bottom 100%',
                 scrub: 1, 
                 pin: true,
@@ -251,11 +251,12 @@ class begin {
     _BindSceneAnimate4() {
         const topText = this.section4.querySelector('.top-text');
         const pinText = this.section4.querySelector('.pintext');
+        const galleryList = this.section4.querySelector('.gallery-list');
 
         let topTextArea = gsap.timeline({
             scrollTrigger: {
                 trigger: topText,
-                start: "top 30%", 
+                start: 'top 30%', 
                 end: 'bottom bottom',
                 scrub: 1, 
                 //markers: true,
@@ -265,24 +266,24 @@ class begin {
         topTextArea.fromTo(topText.querySelector('h4 span'),{y:194, ease:'none', duration:0.1 }, {y:0, ease:'none', duration:0.1 });
         topTextArea.fromTo(pinText.querySelector('span'),{y:-194, ease:'none', duration:0.1 }, {y:0, ease:'none', duration:0.1 });
 
-        let galleryList = gsap.timeline({
+        let galleryThum = gsap.timeline({
             scrollTrigger: {
-                trigger: '.gallery-list',
-                start: "top 40%", 
-                end: "bottom bottom",
+                trigger: galleryList,
+                start: 'top 40%', 
+                end: 'bottom bottom',
                 scrub: 4, 
                 invalidateOnRefresh: true,
                 //markers: true,
             },
         });
-        galleryList.to('.gallery-list li', {x:100, y: -150, autoAlpha: 1, ease:'none', stagger: 0.1,});
+        galleryList.to(galleryList.querySelector('li'), {x:100, y: -150, autoAlpha: 1, ease:'none', stagger: 0.1,});
 
         let galleryPin = gsap.timeline({
             scrollTrigger: {
-                trigger: '.gallery-list',
-                start: "top top", 
+                trigger: galleryList,
+                start: 'top top', 
                 endTrigger: this.section4,
-                end: "bottom bottom",
+                end: 'bottom bottom',
                 scrub: 4, 
                 pin: true,
                 pinSpacing: false,
@@ -297,14 +298,14 @@ class begin {
         let tl5 = gsap.timeline({
             scrollTrigger: {
                 trigger: this.section5,
-                start: "top 60%", 
-                end: "bottom bottom",
+                start: 'top 60%', 
+                end: 'bottom bottom',
                 scrub: 1, 
                 invalidateOnRefresh: true,
                 //markers: true,
             },
         });
-        tl5.to('.section5 .text span', {height:0, ease:'none', stagger: 0.2,})
+        tl5.to(his.section5.querySelector('.text span'), {height:0, ease:'none', stagger: 0.2,})
     }
 
     _videoObserver () {
