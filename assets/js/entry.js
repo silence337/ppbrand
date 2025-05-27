@@ -305,7 +305,7 @@ class begin {
                 //markers: true,
             },
         });
-        tl5.to(his.section5.querySelector('.text span'), {height:0, ease:'none', stagger: 0.2,})
+        tl5.to(this.section5.querySelector('.text span'), {height:0, ease:'none', stagger: 0.2,})
     }
 
     _videoObserver () {
