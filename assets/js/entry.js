@@ -266,32 +266,47 @@ class begin {
         topTextArea.fromTo(topText.querySelector('h4 span'),{y:194, ease:'none', duration:0.1 }, {y:0, ease:'none', duration:0.1 });
         topTextArea.fromTo(pinText.querySelector('span'),{y:-194, ease:'none', duration:0.1 }, {y:0, ease:'none', duration:0.1 });
 
-        let galleryThum = gsap.timeline({
-            scrollTrigger: {
-                trigger: galleryList,
-                start: 'top 40%', 
-                end: 'bottom bottom',
-                scrub: 4, 
-                invalidateOnRefresh: true,
-                //markers: true,
-            },
-        });
-        galleryThum.to(galleryList.querySelectorAll('li'), {x:100, y: -150, autoAlpha: 1, ease:'none', stagger: 0.1,});
 
-        let galleryPin = gsap.timeline({
+        this._SequenceCanvas ();
+
+        let scrollSequence = gsap.timeline({
+            onUpdate: this.render,
             scrollTrigger: {
-                trigger: galleryList,
-                start: 'top top', 
+                trigger: '.sequence-wrap',
                 endTrigger: this.section4,
+                start: 'top top', 
                 end: 'bottom bottom',
-                scrub: 4, 
+                scrub:0.5, 
                 pin: true,
                 pinSpacing: false,
                 invalidateOnRefresh: true,
                 //markers: true,
             },
         });
-        galleryPin.to('.circle .inner', {scale:2500, ease:'none'},'<+=0.7')
+
+        scrollSequence.to(this.seq, {
+            frame: this.frameCount - 1,
+            snap: "frame",
+            ease: "none",
+            duration: 1,
+            invalidateOnRefresh: true,
+        }, 0);
+
+
+        gsap.utils.toArray(galleryList.querySelectorAll('li')).forEach((list) => {
+            const image = list.querySelector("img");
+
+            gsap.to(image, {
+                yPercent: -70,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: list,
+                    start: 'top 40%',
+                    scrub: 1
+                    // markers: true,
+                }
+            });
+        });
     }
 
     _BindSceneAnimate5 () {
@@ -305,7 +320,37 @@ class begin {
                 //markers: true,
             },
         });
-        tl5.to(this.section5.querySelector('.text span'), {height:0, ease:'none', stagger: 0.2,})
+        tl5.to('.section5 .text span', {height:0, ease:'none', stagger: 0.2,})
+    }
+
+    _SequenceCanvas () {
+        let canvas = this.section4.querySelector("canvas");
+        let context = canvas.getContext("2d");
+            canvas.width = 490;
+            canvas.height = 928;  
+
+        this.frameCount = 96;
+        const currentFrame = index => (
+            `./images/${(index + 1).toString().padStart(2, '0')}.jpg`
+        );
+
+        let images = []
+        this.seq = {
+            frame: 0
+        };
+
+        for (let i = 0; i < this.frameCount; i++) {
+            let img = new Image();
+            img.src = currentFrame(i);
+            images.push(img);
+        }
+
+        images[0].onload = this.render;
+
+        this.render = () => {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(images[this.seq.frame], 0, 0); 
+        }
     }
 
     _videoObserver () {

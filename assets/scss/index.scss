@@ -543,9 +543,31 @@ body {
             mix-blend-mode: hard-light;
         }
     }
+    .sequence-wrap{
+        position: relative;
+        width:1400px;
+        margin:0 auto;
+
+        .sequence{
+            position: absolute;
+            left:50%;
+            width:490px;
+            height:928px;
+            transform:translateX(-50%);
+
+            &::before{
+                content:'추가 업데이트 예정... ';
+                position:absolute;
+                left:0;
+                top:0;
+            }
+        }
+    }
 
 
     .gallery-list{
+        height:2000px;
+        padding-top:200px;
         ul{
             display: flex;
             flex-wrap: wrap;
@@ -557,20 +579,21 @@ body {
 
         li{
             position:relative;
-            left:-100px;
-            top:150px;
-            width:307px;
-            height:375px;
-            overflow:hidden;
-            opacity: 0;
-            margin:0 20px 20px 20px;
+            width:calc(100% / 2);
+            padding-bottom:200px;
+
+            &:nth-child(even){
+                display: flex;
+                justify-content: flex-end;
+                padding-top:200px;
+            }
 
             span{
+                position:relative;
                 display:block;
-                
-                img{
-                    transition:1.2s;
-                }
+                width:307px;
+                height:375px;
+                overflow:hidden;
 
                 &::before{
                     content: "";
@@ -582,17 +605,17 @@ body {
                     position: absolute;
                     top: 0;
                     background: #fff;
-                    transition: 1.2s;
+                    transition: 1s;
                     z-index: 2;
                 }
 
                 &:hover {
                     img{
-                        transform: translateY(-70px);
+                        //transform: translateY(-70px);
                     }
                     &::before{
                         opacity: 1;
-                        width:40px;
+                        width:60px;
                     }
                 }
 
@@ -622,6 +645,7 @@ body {
 
     .text{
         width: 1400px;
+        padding-top:100px;
         margin:0 auto;
         font-size:90px;
         color:#fff;
