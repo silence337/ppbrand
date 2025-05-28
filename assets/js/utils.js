@@ -72,6 +72,11 @@ export const ResizeGet = () => {
 export const ResizeSet = s => {
     return ResizeState = s;
 }
+export const ScrollTop= () => {
+    let scrollTop = window.scrollTop || document.documentElement.scrollTop || document.body.scrollTop;
+    return scrollTop;
+}
+
 export const ScrollListener = (target, fn) => {
     return target.addEventListener('scroll', RequestFrame(() => {
         if (typeof fn === 'function') {
@@ -114,6 +119,36 @@ export const videoObserver = () => {
     });
 
     videoPlayer.forEach((el) => {
+        observer.observe(el);
+    })
+}
+
+//test 확인 후 video observer 와 공통 모듈로 사용할수 있도록 수정 진행...
+export const elmentObserver = fn => {
+    var element = document.querySelectorAll('[data-observer]');
+
+    if ( element.length < 1 ) return;
+
+    var observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(function (entry) {
+            console.log(entry.intersectionRatio);
+
+            if (entry.intersectionRatio > 0.1) {
+                if (typeof fn === 'function') {
+                    fn();
+                } else {
+                    window[fn].call();
+                }
+                console.log('element O');
+            }
+        });
+    },{
+        root: null,
+        rootMargin: '0px 0px 0px 0px',
+        threshold: 0.1,
+    });
+
+    element.forEach((el) => {
         observer.observe(el);
     })
 }
