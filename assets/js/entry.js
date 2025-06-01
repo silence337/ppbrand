@@ -89,7 +89,7 @@ class begin {
             }
         });
 
-        const textElements = gsap.utils.toArray(motion1.querySelector('.text'));
+        const textElements = gsap.utils.toArray(motion1.querySelectorAll('.text'));
         textElements.forEach(text => {
             tltypo.to(text, {
                 backgroundSize: '100%',
@@ -151,7 +151,7 @@ class begin {
                 invalidateOnRefresh: true,
             },
         });
-        tl3.to(motion3.querySelector('.sbi-img'), { x:`${-(clientW / 1.2)}px`, y:`${clientH}px`, ease:'none'});
+        tl3.to(motion2.querySelector('.sbi-img'), { x:`${-(clientW / 1.2)}px`, y:`${clientH}px`, ease:'none'});
         tl3.fromTo(motion3.querySelector('.bg'), { scale:0.3, ease:'none'},  { scale:1}, '<');
         tl3.to(motion3.querySelector('.text'), { x: 500, ease:'none'}, '<')
            .to(motion3.querySelector('.sub-text'), { y:500, opacity: 1, ease:'none'}, '<+=0.3')
