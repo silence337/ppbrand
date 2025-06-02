@@ -225,7 +225,7 @@ $imgUrl: "../images";
     position: relative;
     z-index: 2;
     top:-1px;
-    height:4000px;
+    height:4300px;
     padding:100px 0;
     overflow: hidden;
     background-color:#f5f5f5;
@@ -276,10 +276,13 @@ $imgUrl: "../images";
         .sequence{
             position: absolute;
             left:50%;
+            top:0;
             width:490px;
-            height:910px;
+            height:490px;
             overflow: hidden;
-            transform:translateX(-50%);
+            transform:translate(-50%, 0);
+            border-bottom-right-radius: 100%;
+            border-bottom-left-radius: 100%;
 
             &::before{
                 content:'추가 업데이트 예정... ';
@@ -287,17 +290,49 @@ $imgUrl: "../images";
                 left:0;
                 top:0;
             }
+            canvas{
+                transform: translateY(-250px);
+            }
+        }
+        .back{
+            position: absolute;
+            left:50%;
+            top:0;
+            z-index: -1;
+            width:670px;
+            height:600px;
+            overflow: hidden;
+            transform:translate(-50%, 0);
+
+            span{
+                position: absolute;
+                left:50%;
+                top:0;
+                width:670px;
+                height:600px;
+                overflow: hidden;
+                transform:translate(-50%, -40%) scale(0.5);
+                border-bottom-right-radius: 100%;
+                border-bottom-left-radius: 100%;
+                background-color: #f5f0e8;
+                transition: 1s;
+            }
+        }
+        &.animated .back span{
+            transform:translate(-50%, 0) scale(1);
         }
     }
 
 
     .gallery-list{
+        position: relative;
+        top:600px;
         height:2000px;
-        padding-top:200px;
+
         ul{
             display: flex;
             flex-wrap: wrap;
-            width: 1400px;
+            width: 700px;
             align-content: center;
             margin: 0 auto;
             padding-top:50px;
@@ -309,8 +344,6 @@ $imgUrl: "../images";
             padding-bottom:200px;
 
             &:nth-child(even){
-                display: flex;
-                justify-content: flex-end;
                 padding-top:200px;
             }
 
@@ -318,8 +351,9 @@ $imgUrl: "../images";
                 position:relative;
                 display:block;
                 width:307px;
-                height:375px;
+                height:307px;
                 overflow:hidden;
+                border-radius: 100%;
 
                 &::before{
                     content: "";
@@ -343,6 +377,13 @@ $imgUrl: "../images";
                 }
 
             
+            }
+
+            .text{
+                letter-spacing: 0;
+                h3{
+                    font-size: 40px;
+                }
             }
         }
         // @for $i from 1 through 4 {
@@ -381,6 +422,8 @@ $imgUrl: "../images";
             }
         }
         em{
+            display: block;
+            padding-top:20px;
             font-size:20px;
             line-height: 1;
         }

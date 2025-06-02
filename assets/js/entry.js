@@ -115,8 +115,8 @@ class begin {
             },
         });
         tl1.fromTo(back ,{y:-200, scale:0.6, ease:'none', autoAlpha: 0}, {y: 100, scale:1, autoAlpha: 1})
-              .fromTo(textLeft ,{x:-500, y:100, autoAlpha: 0}, {ease:'none', x:200, y:100, autoAlpha: 1}, '<')
-              .to(back ,{y: 300, scale:1.8, ease:'none'})
+            .fromTo(textLeft ,{x:-500, y:100, autoAlpha: 0}, {ease:'none', x:200, y:100, autoAlpha: 1}, '<')
+            .to(back ,{y: 300, scale:1.8, ease:'none'})
 
         let tl2 = gsap.timeline({
             scrollTrigger: {
@@ -191,6 +191,7 @@ class begin {
                 pinSpacing: false,
                 invalidateOnRefresh: true,
                 //markers: true,
+                toggleClass: 'animated'
             },
         });
 
@@ -207,7 +208,7 @@ class begin {
             const image = list.querySelector("img");
 
             gsap.to(image, {
-                yPercent: -70,
+                yPercent: -55,
                 ease: 'none',
                 scrollTrigger: {
                     trigger: list,
@@ -216,7 +217,23 @@ class begin {
                     // markers: true,
                 }
             });
+
+
+            let dataX = list.dataset.x;
+            gsap.to(list, {x: dataX, ease:'none', stagger:0.1,
+                scrollTrigger: {
+                    trigger: list.querySelector("span"),
+                    start: 'top 60%', 
+                    end: 'bottom 60%',
+                    scrub: 0, 
+                    invalidateOnRefresh: true,
+                    //markers: true,
+                },},
+            );
+                
         });
+
+
     }
 
     _BindSceneAnimate4 () {
