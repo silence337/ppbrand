@@ -65,8 +65,8 @@ class begin {
             },
         });
         sectionScroll.to(mainText[0], {x:-200, duration:1, stagger: 0.5,})
-                     .to(mainText[1], {x:200, duration:1, stagger: 0.5,})
-                     .to(mainText[2], {x:400, duration:1, stagger: 0.5,});
+                     .to(mainText[1], {x:200, duration:4, stagger: 0.5,})
+                     .to(mainText[2], {x:400, duration:4, stagger: 0.5,});
     }
 
 
@@ -131,7 +131,7 @@ class begin {
             },
         });
         let clientW = document.documentElement.clientWidth + 271;
-        let clientH = document.documentElement.clientWidth + 271;
+        let clientH = document.documentElement.clientHeight + 271;
 
         tl2.to(motion2.querySelector('h3'), {ease:'none', scale:0.2})
             .fromTo(motion2.querySelector('.n1'), {ease:'none', x:`${-clientW}px`, y:`${-clientH}px`}, { x:0, y:0}, '<-=0.1')
@@ -223,7 +223,7 @@ class begin {
             gsap.to(list, {x: dataX, ease:'none', stagger:0.1,
                 scrollTrigger: {
                     trigger: list.querySelector("span"),
-                    start: 'top 60%', 
+                    start: 'top 530px', 
                     end: 'bottom 60%',
                     scrub: 0, 
                     invalidateOnRefresh: true,
