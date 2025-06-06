@@ -3,10 +3,13 @@ import { promise, ScrollListener, ScrollTop, Debounce, videoObserver, elmentObse
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import ScrollSmoother from 'gsap/ScrollSmoother';
+import imagesLoaded from "imagesloaded";
 
 
 class begin {
 	constructor () {
+        this.element = (selector) => document.querySelector(selector);
+
         gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
         ScrollSmoother.create({
@@ -16,57 +19,125 @@ class begin {
             effects: true, 
             smoothTouch: 0.1, 
         });
-        this.element = (selector) => document.querySelector(selector);
+
+        this._preloader();
+	}
+
+    _preloader () {
+        this.preloader = this.element('.preloader');
+        this.progressBox = this.preloader.querySelector('.progress');
+        const imgLoad = imagesLoaded(document.body);
+        const imgTotal = imgLoad.images.length;
+
+        let imgLoaded = 0;
+        let current = 0;
+
+        const updateProgress = () => {
+            const target = (imgLoaded / imgTotal) * 100;
+            current += Math.ceil((target - current) * 0.1);
+
+            this.progressBox.querySelector('p').textContent = `${Math.floor(current)}%`;
+
+            if (current >= 100) {
+                clearInterval(progressTimer);
+
+                this._preloaderAnimated();
+            }
+        };
+
+        imgLoad.on('progress', () => {
+            imgLoaded++;
+        });
+
+        const progressTimer = setInterval(updateProgress, 1000 / 60);
+    }
+
+    _preloaderAnimated () {
+        const loaderImage = this.preloader.querySelector('.loader-image');
+
+        gsap.to(this.progressBox.children, {scale: 0 ,y:-100, opacity:0, delay:0.5})
+        gsap.to(this.progressBox, { height: 0, duration: 1, ease: "power2.inOut",
+            onComplete: () => {
+                this._BindInit ();
+            }
+         })
+        gsap.to(loaderImage, { height: 0, duration: 1, delay:0.7, ease: "power2.inOut" });
+        gsap.to(loaderImage.children, { y: -500, duration: 1, delay:0.7, ease: "power2.inOut",
+            onComplete: () => {
+                this.preloader.style.cssText = 'display:none;';
+            }
+        });
+    }
+
+    _BindInit () {
         this.section1 = this.element('.section1');
         this.section2 = this.element('.section2');
         this.section3 = this.element('.section3');
         this.section4 = this.element('.section4');
 
-        document.addEventListener('DOMContentLoaded', () => {
-            this._BindSceneAnimate1();
-            this._BindSceneAnimate2();
-            this._BindSceneAnimate3();
-            this._BindSceneAnimate4();
 
-            //videoObserver();
-        });
-	}
+        this._BindSceneAnimate1();
+        this._BindSceneAnimate2();
+        this._BindSceneAnimate3();
+        this._BindSceneAnimate4();
+    }
 
 	_BindSceneAnimate1 () {
-        const mainText = this.section1.querySelectorAll('p');
+        const mainText = this.section1.querySelectorAll('p span'),
+              brandSVG = this.section1.querySelector('.brandsvg'),
+              mainBG = this.section1.querySelector('.main-bg'),
+              subCopy = this.section1.querySelector('.dec');
 
-        let scrollTop = ScrollTop ();
-        if (scrollTop === 0) {
-            gsap.set(mainText, {opacity:0, x: -200})
-            gsap.to(mainText, {x:0, autoAlpha: 1,duration:1, stagger: 0.5,});
-        }
 
-        gsap.timeline({
+        promise(500).then(()=>{
+            for(let i = 0; i < 15; i++){
+                let transbox = document.createElement("div");
+                transbox.classList.add("transbox");
+                mainBG.appendChild(transbox);
+            }
+            let box = mainBG.querySelectorAll("div");
+            let px = document.documentElement.clientWidth / 5;
+            let percent = (px / document.documentElement.clientWidth) * 100; 
+
+            box.forEach(el => {
+                el.style.cssText = `width:${percent}%;height:${px}px;`
+            })
+
+            gsap.to('.transbox', {
+                duration: 1, 
+                opacity: () => gsap.utils.random(0.2, 0.6), 
+                stagger: { 
+                    from: "random",
+                    each: 0.2,
+                }
+            });  
+
+            gsap.to(mainText, {y:0, duration:0.5, delay:0.5, stagger: 0.3, ease: 'power1.inOut',
+                onComplete : () => {
+                    brandSVG.classList.add('animated')
+                }
+            });
+            gsap.to(subCopy, {y:0, duration:1.5, opacity:1,delay:0.5,  ease: 'power1.inOut'});
+        })
+  
+
+
+        let main = gsap.timeline({
             scrollTrigger: {
                 trigger: this.section1.querySelector('.inner'),
                 start: 'top top', 
-                endTrigger: this.section1,
-                end: 'bottom 100%',
-                scrub: 1, 
+                endTrigger: this.section2,
+                end: 'bottom 200%',
+                scrub: 0, 
                 //markers: true,
                 invalidateOnRefresh: true,
 				pin: true,
                 pinSpacing: false
             },
         });
-        let sectionScroll = gsap.timeline({
-            scrollTrigger: {
-                trigger: this.section1,
-                start: 'top top', 
-                end: 'bottom 100%',
-                scrub: 1, 
-                //markers: true,
-                invalidateOnRefresh: true,
-            },
-        });
-        sectionScroll.to(mainText[0], {x:-200, duration:1, stagger: 0.5,})
-                     .to(mainText[1], {x:200, duration:4, stagger: 0.5,})
-                     .to(mainText[2], {x:400, duration:4, stagger: 0.5,});
+        main.to(this.section1.querySelector('.inner'), {scale:0, y:-1000, skewY: -100, ease:'none', force3D: true})
+        main.to(this.section1.querySelector('.main-text'), {scale:0, y:-1000, x:-2000},'<');
+
     }
 
 
@@ -258,7 +329,7 @@ class begin {
 
         this.frameCount = 96;
         const currentFrame = index => (
-            `./images/${(index + 1).toString().padStart(2, '0')}.jpg`
+            `./images/${(index + 1).toString().padStart(2, '0')}-min.jpg`
         );
 
         let images = []
