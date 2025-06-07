@@ -174,18 +174,18 @@ class begin {
                 scrub: 1, 
                 //markers: true,
                 invalidateOnRefresh: true,
-				onUpdate: ({progress, direction, isActive}) => {
-					console.log(progress, direction, isActive);
+                onUpdate: ({progress, direction, isActive}) => {
+                    console.log(progress, direction, isActive);
 
-					if (progress < 0.21) {
-						gsap.to(motion1,{backgroundColor:'#fff', duration:1})
+                    if (progress < 0.21) {
+                        gsap.to(motion1,{backgroundColor:'#fff', duration:1})
                         return;
-					}         
+                    }         
 
-					if (progress > 0.21) {
-						gsap.to(motion1,{backgroundColor:'#000', duration:1})
-					}
-				}
+                    if (progress > 0.21) {
+                        gsap.to(motion1,{backgroundColor:'#000', duration:1})
+                    }
+                }
             },
         });
         tl1.fromTo(back ,{x:0, y:-400, ease:'none'}, {x:200, y: 200, autoAlpha: 1})
