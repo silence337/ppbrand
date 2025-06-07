@@ -5,6 +5,7 @@ $imgUrl: "../images";
 @use "sass:math";
 @import "common/_mixin";
 @import "common/_reset";
+@import "common/_keyframe";
 @import "common/_svg";
 
 
@@ -12,7 +13,7 @@ $imgUrl: "../images";
 .container{
     font-family: "Lora", serif;
 }
-
+//------------------------ PRELOADER 
 .preloader{
     position:fixed;
     left:0;
@@ -27,19 +28,63 @@ $imgUrl: "../images";
         left:0;
         top:0;
         z-index: 2;
-        display: flex;
         width: 100%;
         height: 100%;
         overflow: hidden;
-        justify-content: center;
-        align-items: center;
         background-color: #000;
+        
         p{
+            padding-top: 20px;
             color:#fff;
-            font-size:200px;
-            font-family: "Comforter", cursive;
+            font-size:150px;
+            font-family: "Roboto", sans-serif;
             font-weight: 400;
+            text-align: center;
         }
+
+
+        .loading {
+            position: absolute;
+            left: 0;
+            top: 310px;
+            width: 100%;
+            animation: fadein 2s;
+        }
+
+        .spinner-wrapper {
+            position: absolute;
+            z-index: 15;
+            top: 0;
+            left: 50%;
+            width: 363px;
+            transform: translate(-50%, 0);
+        }
+
+        .spinner-text {
+            position: absolute;
+            top: 27px;
+            left: 50%;
+            text-transform: uppercase;
+            letter-spacing: 10px /4;
+            transform: translate(-36%, -50%);
+            animation: pulse 1.5s infinite;
+        }
+
+        .spinner {
+            margin: 0;
+            display: block;
+            position: absolute;
+            left: 88px;
+            top: 0;
+            border: 24px solid rebeccapurple;
+            width: 25px;
+            height: 25px;
+            border-left-color: transparent;
+            border-right-color: transparent;
+            border-radius: 50px;
+            animation: spin  1.5s infinite;
+        }
+
     }
     .loader-image{
         position:absolute;
@@ -62,9 +107,22 @@ $imgUrl: "../images";
   margin:0 auto;
 }
 
+//------------------------ SECTION 1 
 .section1{
+    z-index: 2;
     height:100vh;
     background-color: #fff9ec;
+
+    .line{
+        position: absolute;
+        left:0;
+        top:0;
+        z-index:2;
+        width: 100%;
+        height:100vh;
+        border:5px solid #fff9ec;
+        border-bottom: 0;
+    }
 
     .inner{
         width:100%;
@@ -81,7 +139,7 @@ $imgUrl: "../images";
         height:100%;
         margin:0 auto;
         
-        background: url(#{$imgUrl}/main_bg_wm.webp) no-repeat top center;
+        //background: url(#{$imgUrl}/main_bg_wm.webp) no-repeat top center;
         background-size: cover;
     }
     .main-bg{
@@ -94,6 +152,7 @@ $imgUrl: "../images";
         flex-wrap: wrap;
         width:100%;
         height:100%;
+        overflow: hidden;
         background: url(#{$imgUrl}/main_bg.webp) no-repeat top center;
         background-size: cover;
 
@@ -118,8 +177,7 @@ $imgUrl: "../images";
         z-index: 3;
         width:1400px;
         margin:0 auto;
-        mix-blend-mode: hard-light;
-        //font-family: "Roboto", sans-serif;
+        mix-blend-mode: plus-lighter;
         font-family: "Josefin Sans", sans-serif;
 
         .text-inner{
@@ -127,9 +185,8 @@ $imgUrl: "../images";
             left:0;
             top: 74px;
             font-size: 113px;
-            color: #0e0e0e;
+            color: #ff7800;
             line-height: 1;
-            mix-blend-mode: hard-light;
 
             p{
                 position: relative;
@@ -188,22 +245,24 @@ $imgUrl: "../images";
 
 }
 
+//------------------------ SECTION 2
 .section2{
     width: 100%;
     overflow: hidden;
     text-align:center;
+    background-color: #f7d901;
 
     .tl-motion1{
         position: relative;
         top:-1px;
-        padding-top:100px;
-        background-color: #000;
+        padding-top:200px;
+        font-family: "Roboto", sans-serif;
+        background-color: #fff;
 
         .inner{
             position: relative;
             width:1400px;
             margin:0 auto;
-            padding-bottom: 100px;
             z-index:2;
             text-align: left;
             color:#fff;
@@ -211,8 +270,8 @@ $imgUrl: "../images";
         }
 
         .text{
-            color: rgb(182, 182, 182, 0.2);
-            background: linear-gradient(to right, #b6b6b6, #b6b6b6) no-repeat;
+            color: hsl(0deg 99.84% 49.33% / 34%);
+            background: linear-gradient(to right, #0cd5f5, #ff6507) no-repeat;
             -webkit-background-clip: text;
             background-clip: text;
             background-size: 0%;
@@ -225,7 +284,6 @@ $imgUrl: "../images";
             z-index:2;
             top:700px;
             height:auto;
-            font-family: "Roboto", sans-serif;
             font-optical-sizing: auto;
             font-weight: 500;
             font-size:67px;
@@ -246,13 +304,41 @@ $imgUrl: "../images";
         }
     }
     .back{
-        padding-top:200px;
+        width: 1520px;
+        padding-top: 440px;
         text-align:center;
+        mix-blend-mode: hard-light;
+        span{
+            display: block;
+            clip-path: polygon(0 0,48% 0,100% 100%,55% 100%);
+
+            img{
+                width: 1080px;
+            }
+        }
+    }
+    .back-text{
+        position: absolute;
+        left:0;
+        top:900px;
+        z-index:-1;
+
+        span{
+            animation: text-to 36s linear infinite;
+            color: #fff;
+            display: inline-block;
+            font-family: Roboto, sans-serif;
+            font-optical-sizing: auto;
+            font-size: 165px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
     }
     .tl-motion2{
         position: relative;
         z-index: 2;
-        height:2000px;
+        height:2070px;
         background-color: #fff;
 
         h3{
@@ -292,6 +378,17 @@ $imgUrl: "../images";
         position: relative;
         z-index: 3;
         height:1500px;
+
+        &::after{
+            content:'';
+            position:absolute;
+            left:0;
+            z-index: -1;
+            top:500px;
+            width:100%;
+            height:100%;
+            background-color: #fff; 
+        }
 
         .inner{
             position: relative;
@@ -352,6 +449,8 @@ $imgUrl: "../images";
     }
 
 }
+
+//------------------------ SECTION 3 
 .section3{
     position: relative;
     z-index: 2;
@@ -556,6 +655,8 @@ $imgUrl: "../images";
     }
 
 }
+
+//------------------------ SECTION 4
 .section4{
     height:500px;
     background-color: #d35400;

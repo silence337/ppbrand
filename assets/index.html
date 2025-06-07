@@ -7,7 +7,15 @@
 </head>
 <body>
 <div class="preloader">
-    <div class="progress"><p></p></div>
+    <div class="progress">
+        <div class="loading">
+            <div class="spinner-wrapper">
+                <span class="spinner-text">Loading</span>
+                <span class="spinner"></span>
+            </div>
+            <p class="percent"></p>
+        </div>
+    </div>
     <div class="loader-image"><img src="images/loader_img.webp" /></div>
 </div>
 <div id="smooth-wrapper">
@@ -15,6 +23,7 @@
         <div class="container">
             <!-- section 1 -->
             <section class="section1 group">
+                <div class="line"></div>
                 <div class="inner">
                     <div class="main-text">
                         <div class="brandsvg">
@@ -290,16 +299,20 @@
             <section class="section2 group">
                 <div class="tl-motion1">
                     <div class="inner">
-                        <h3 class="text">Sustainability / Craftsmanship</h3>
+                        <h3 class="text">Sustainability, Craftsmanship</h3>
                         <h4 class="text">Designed to Last</h4>
                         <p class="text">We use ethically sourced materials and sustainable</p>
                         <p class="text">practices to create fashion with a conscience.</p>
                         
-                        <ol class="text-left">
+                        <!-- <ol class="text-left">
                             <li>Bold. Timeless. You.</li>
                             <li>Redefining fashion with every stitch.</li>
-                        </ol>
-                        <div class="back"><img src="images/section3_bg.jpg"/></div>
+                        </ol> -->
+                        <div class="back"><span><img src="images/section3_bg.webp"/></span></div>
+                        <div class="back-text">
+                            <span>AT [BRAND NAME], WE BELIEVE FASHION IS MORE THAN STYLE—IT'S A STATEMENT. 
+                                OUR PIECES ARE CRAFTED WITH INTENTION, BLENDING INNOVATION WITH TRADITION.</span>
+                        </div>
                     </div>
                 </div>
 

@@ -36,11 +36,10 @@ class begin {
             const target = (imgLoaded / imgTotal) * 100;
             current += Math.ceil((target - current) * 0.1);
 
-            this.progressBox.querySelector('p').textContent = `${Math.floor(current)}%`;
+            this.progressBox.querySelector('.percent').textContent = `${Math.floor(current)}%`;
 
             if (current >= 100) {
                 clearInterval(progressTimer);
-
                 this._preloaderAnimated();
             }
         };
@@ -49,20 +48,21 @@ class begin {
             imgLoaded++;
         });
 
-        const progressTimer = setInterval(updateProgress, 1000 / 60);
+        const progressTimer = setInterval(updateProgress, 3000 / 60);
     }
 
     _preloaderAnimated () {
-        const loaderImage = this.preloader.querySelector('.loader-image');
+        const loaderImage = this.preloader.querySelector('.loader-image'),
+              progressInner = this.progressBox.querySelector('.loading');
 
-        gsap.to(this.progressBox.children, {scale: 0 ,y:-100, opacity:0, delay:0.5})
-        gsap.to(this.progressBox, { height: 0, duration: 1, ease: "power2.inOut",
+        gsap.to(progressInner, {opacity:0,  duration: 1, delay:0.3})
+        gsap.to(this.progressBox, { height: 0, duration: 1, delay:0.5, ease: "power2.inOut",
             onComplete: () => {
                 this._BindInit ();
             }
          })
-        gsap.to(loaderImage, { height: 0, duration: 1, delay:0.7, ease: "power2.inOut" });
-        gsap.to(loaderImage.children, { y: -500, duration: 1, delay:0.7, ease: "power2.inOut",
+        gsap.to(loaderImage, { height: 0, duration: 1, delay:1.5, ease: "power2.inOut" });
+        gsap.to(loaderImage.children, { y: -500, duration: 1.7, delay:2, ease: "power2.inOut",
             onComplete: () => {
                 this.preloader.style.cssText = 'display:none;';
             }
@@ -76,13 +76,13 @@ class begin {
         this.section4 = this.element('.section4');
 
 
-        this._BindSceneAnimate1();
-        this._BindSceneAnimate2();
-        this._BindSceneAnimate3();
-        this._BindSceneAnimate4();
+        this._BindAnimated1();
+        this._BindAnimated2();
+        this._BindAnimated3();
+        this._BindAnimated4();
     }
 
-	_BindSceneAnimate1 () {
+	_BindAnimated1 () {
         const mainText = this.section1.querySelectorAll('p span'),
               brandSVG = this.section1.querySelector('.brandsvg'),
               mainBG = this.section1.querySelector('.main-bg'),
@@ -109,6 +109,7 @@ class begin {
                 stagger: { 
                     from: "random",
                     each: 0.2,
+                    repeat:1
                 }
             });  
 
@@ -126,8 +127,6 @@ class begin {
             scrollTrigger: {
                 trigger: this.section1.querySelector('.inner'),
                 start: 'top top', 
-                endTrigger: this.section2,
-                end: 'bottom 200%',
                 scrub: 0, 
                 //markers: true,
                 invalidateOnRefresh: true,
@@ -135,41 +134,33 @@ class begin {
                 pinSpacing: false
             },
         });
-        main.to(this.section1.querySelector('.inner'), {scale:0, y:-1000, skewY: -100, ease:'none', force3D: true})
-        main.to(this.section1.querySelector('.main-text'), {scale:0, y:-1000, x:-2000},'<');
+        main.to(this.section1.querySelector('.inner'), {scale:0.2, x:500, y:-200, skewY: -10, ease:'none', force3D: true})
+            .to(this.section1.querySelector('.main-text'), {y:-400, x:-400},'<')
+            .fromTo(this.section2.querySelector('.tl-motion1'),{
+                clipPath: 'polygon(0 0, 0% 0, 20% 100%, 0% 100%)'},{
+                clipPath: 'polygon(0 0, 56% 0, 160% 150%, 0% 100%)'
+            }, '<+=0.2')
 
     }
 
 
-    _BindSceneAnimate2() {
+    _BindAnimated2() {
         const back = this.section2.querySelector('.back'),
-              textLeft = this.section2.querySelector('.text-left'),
               motion1 = this.section2.querySelector('.tl-motion1'),
               motion2 = this.section2.querySelector('.tl-motion2'),
               motion3 = this.section2.querySelector('.tl-motion3');
 
-
-        let tltypo = gsap.timeline({
-            scrollTrigger: {
-                trigger: this.section2,
-                start: '10% bottom', 
-                end: 'bottom bottom',
-                scrub: 1, 
-                //markers: true,
-                invalidateOnRefresh: true,
-            }
-        });
-
         const textElements = gsap.utils.toArray(motion1.querySelectorAll('.text'));
         textElements.forEach(text => {
-            tltypo.to(text, {
+            gsap.to(text, {
                 backgroundSize: '100%',
                 duration: 3,//ease: 'none',
+                marker: true,
                 scrollTrigger: {
+                    trigger: this.section2,
                     trigger: text,
-                    start: 'center 80%',
-                    end: 'center 20%',
-                    scrub: true,
+                    start: 'center 50%',
+                    scrub: 1,
                 },
             });
         });
@@ -178,16 +169,27 @@ class begin {
             scrollTrigger: {
                 trigger: motion1,
                 endTrigger: motion2,
-                start: 'top 60%', 
+                start: 'top 40%', 
                 end: 'bottom 100%',
                 scrub: 1, 
                 //markers: true,
                 invalidateOnRefresh: true,
+				onUpdate: ({progress, direction, isActive}) => {
+					console.log(progress, direction, isActive);
+
+					if (progress < 0.21) {
+						gsap.to(motion1,{backgroundColor:'#fff', duration:1})
+                        return;
+					}         
+
+					if (progress > 0.21) {
+						gsap.to(motion1,{backgroundColor:'#000', duration:1})
+					}
+				}
             },
         });
-        tl1.fromTo(back ,{y:-200, scale:0.6, ease:'none', autoAlpha: 0}, {y: 100, scale:1, autoAlpha: 1})
-            .fromTo(textLeft ,{x:-500, y:100, autoAlpha: 0}, {ease:'none', x:200, y:100, autoAlpha: 1}, '<')
-            .to(back ,{y: 300, scale:1.8, ease:'none'})
+        tl1.fromTo(back ,{x:0, y:-400, ease:'none'}, {x:200, y: 200, autoAlpha: 1})
+           .to(back.querySelector('img') ,{x:-1000, ease:'none'},'<');
 
         let tl2 = gsap.timeline({
             scrollTrigger: {
@@ -229,7 +231,7 @@ class begin {
            .to(motion3.querySelector('.bg img'), { y:300, ease:'none'}, '<-=0.1');
      
     }
-    _BindSceneAnimate3() {
+    _BindAnimated3() {
         const topText = this.section3.querySelector('.top-text');
         const pinText = this.section3.querySelector('.pintext');
         const galleryList = this.section3.querySelector('.gallery-list');
@@ -307,7 +309,7 @@ class begin {
 
     }
 
-    _BindSceneAnimate4 () {
+    _BindAnimated4 () {
         let tl4 = gsap.timeline({
             scrollTrigger: {
                 trigger: this.section4,
