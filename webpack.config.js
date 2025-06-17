@@ -9,10 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	mode: 'development',
-	//mode: 'production',
-	entry: {
-		ui:  path.resolve(__dirname, './assets/js/entry.js'),
-	},
+	entry:  './src/index.tsx',
 	output: {
 		clean: true,
 		filename: 'js/[name].js',
@@ -24,30 +21,23 @@ module.exports = {
 	module: {
 	rules: [
 		{
-			test: /\.m?js$/,
+			test: /\.(png|jpe?g|gif|webp|svg)$/i,
+			type: 'asset/resource',
+			generator: {
+				filename: 'images/[name][ext]' // 출력 경로 및 파일명 설정
+			}
+		},
+		{
+			test: /\.(js|jsx|ts|tsx)$/,
 			exclude: /node_modules/,
 			use: {
 				loader: 'babel-loader',
 				options: {
 					presets: [
-						[
-							'@babel/env', {
-								corejs: 2,
-								useBuiltIns: 'usage',
-								//debug: true,
-								targets: { 
-									"browsers": ["last 3 versions", "ie >= 11"],
-									//"node": "current"
-								},
-								modules: false,
-							}
-						],
+						'@babel/preset-env',
+						'@babel/preset-react',
+						'@babel/preset-typescript'
 					],
-					sourceType: "unambiguous",
-					plugins: [
-						'@babel/plugin-transform-runtime', 
-						//'@babel/plugin-proposal-class-properties'
-					]
 				}
 			}
 		},
@@ -58,43 +48,10 @@ module.exports = {
 				
 				{
 					loader: MiniCssExtractPlugin.loader,
-					options: {
-						//publicPath: '../images/', // CSS in images path ( 아래 file-loader publicPath 와 중첩)
-					},
 				},
 				'css-loader', 
 				'sass-loader',
-				// {
-				// 	loader: "postcss-loader",
-				// 	options: {
-				// 		postcssOptions: {
-				// 			plugins: [
-				// 				[
-				// 					"postcss-preset-env",
-				// 					{
-				// 					// Options
-				// 					},
-				// 				],
-				// 			],
-				// 		},
-				// 	}
-				// }
 			  ],
-		},
-
-		{
-			test: /\.(jpg|jpeg|gif|png|svg|webp)$/,
-			use: [
-				{
-					loader:'file-loader',
-					options: {
-						publicPath: '../images',  // CSS in images path
-						outputPath:'./images/',
-						name: '[name].[ext]',
-						//name: '[name].[ext]?[hash]',
-					}
-				}
-			]
 		},
 		],
 	},
@@ -111,17 +68,16 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			title: 'Fashion Brand example ',
 			filename: 'index.html',
-			template: './assets/index.html',
+			template: './public/index.html',
 			hash: false,
 			minify: true,
 			scriptLoading: 'blocking'
 		}),
 		new CopyWebpackPlugin({'patterns': [
-			{from:'./assets/images', to:'images'}
+			{from:'./public/images', to:'images'}
 		]}),
 	],
 	devServer: {
-		//contentBase: __dirname + "/dist/",
 		static:{
 			directory: path.join(__dirname, '/dist/'),
 		},
@@ -131,13 +87,7 @@ module.exports = {
 		client: {
 			progress: true,
 		},
-		//progress: true,
-		//watchContentBase: true,
 		liveReload: true,
-		//writeToDisk: true,
-		// watchOptions: {
-		//   ignored: /node_modules/
-		// },
 	},
 	optimization: {
 		minimize: true,
@@ -145,17 +95,11 @@ module.exports = {
 			new CssMinimizerPlugin(),
 			new TerserPlugin()
 		],
-		//splitChunks: false,
-		// moduleIds: 'size',
-		// removeAvailableModules: true,
-		// mangleExports: true,
-		// realContentHash: false,
-		// concatenateModules: true,
 		emitOnErrors: true
 	},
 	devtool: 'source-map',
 	resolve: {
 		modules: ['node_modules'],
-		extensions: ['.js', '.json', '.jsx', '.css'],
+		extensions: ['.js', '.jsx', '.ts', '.tsx'],
 	},
 };
