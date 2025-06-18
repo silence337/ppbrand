@@ -131,10 +131,13 @@ const Section3 = ({ isLoading }: SectionProps) => {
       });
     }, galleryRef);
 
-    return () => {
-      ctxText.revert();
-      ctxGallery.revert();
-    };
+    /**
+     * 언마운트의 경우 gsap clean up
+     */
+    // return () => {
+    //   ctxText.revert();
+    //   ctxGallery.revert();
+    // };
   }, [isLoading]);
 
   return (

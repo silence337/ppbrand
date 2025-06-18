@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import imagesLoaded from 'imagesloaded';
 import loaderimage from '../assets/images/loader_img.webp';
@@ -13,6 +13,7 @@ const Loader = ({ onLoaded }: LoaderProps) => {
   const percentElem = useRef<HTMLParagraphElement | null>(null);
   const loaderImgElem = useRef<HTMLDivElement>(null);
   const loadingElem = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(true);
 
   const preloaderAnimation = () => {
     if (loadingElem.current) {
@@ -43,9 +44,7 @@ const Loader = ({ onLoaded }: LoaderProps) => {
         delay: 2,
         ease: 'power2.inOut',
         onComplete: () => {
-          if (preloaderElem.current) {
-            preloaderElem.current.style.cssText = 'display:none;';
-          }
+          setIsVisible(false);
         },
       });
     }
@@ -88,20 +87,25 @@ const Loader = ({ onLoaded }: LoaderProps) => {
   }, []);
 
   return (
-    <div className='preloader' ref={preloaderElem}>
-      <div className='progress' ref={progressElem}>
-        <div className='loading' ref={loadingElem}>
-          <div className='spinner-wrapper'>
-            <span className='spinner-text'>Loading</span>
-            <span className='spinner'></span>
+    <>
+      {isVisible && (
+        <div className='preloader' ref={preloaderElem}>
+          <div className='progress' ref={progressElem}>
+            <div className='loading' ref={loadingElem}>
+              <div className='spinner-wrapper'>
+                <span className='spinner-text'>Loading</span>
+                <span className='spinner'></span>
+              </div>
+              <p className='percent' ref={percentElem}></p>
+            </div>
           </div>
-          <p className='percent' ref={percentElem}></p>
+          <div className='loader-image' ref={loaderImgElem}>
+            <img src={loaderimage} />
+          </div>
         </div>
-      </div>
-      <div className='loader-image' ref={loaderImgElem}>
-        <img src={loaderimage} />
-      </div>
-    </div>
+      )}
+      ;
+    </>
   );
 };
 

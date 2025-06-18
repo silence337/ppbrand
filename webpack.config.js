@@ -8,7 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-	mode: 'development',
+	mode: 'production',
 	entry:  './src/index.tsx',
 	output: {
 		clean: true,
@@ -93,7 +93,17 @@ module.exports = {
 		minimize: true,
 		minimizer: [
 			new CssMinimizerPlugin(),
-			new TerserPlugin()
+			new TerserPlugin({
+				terserOptions: {
+					compress: {
+						drop_console: true, // console.* 제거
+					},
+					format: {
+						comments: false, // 주석 제거
+					},
+				},
+				extractComments: false, // 별도 LICENSE.txt 생성 방지
+			})
 		],
 		emitOnErrors: true
 	},

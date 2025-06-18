@@ -28,8 +28,10 @@ const Section4 = ({ isLoading }: SectionProps) => {
       });
       tl.fromTo('.text span', { y: -100 }, { y: 0, ease: 'none' });
     }, sectionRef4);
-
-    return () => ctx.revert();
+    /**
+     * 언마운트의 경우 gsap clean up
+     */
+    // return () => ctx.revert();
   }, [isLoading]);
 
   return (

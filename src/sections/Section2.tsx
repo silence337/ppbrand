@@ -169,12 +169,14 @@ const Section2 = ({ isLoading }: SectionProps) => {
         .to('.sub-text', { y: 500, opacity: 1, ease: 'none' }, '<+=0.3')
         .to('.bg img', { y: 300, ease: 'none' }, '<-=0.1');
     }, motion3);
-
-    return () => {
-      ctxTimeline1.revert();
-      ctxTimeline2.revert();
-      ctxTimeline3.revert();
-    };
+    /**
+     * 언마운트의 경우 gsap clean up
+     */
+    // return () => {
+    //   ctxTimeline1.revert();
+    //   ctxTimeline2.revert();
+    //   ctxTimeline3.revert();
+    // };
   }, [isLoading]);
 
   return (

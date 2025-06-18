@@ -14,6 +14,7 @@ const Section1 = ({ isLoading }: SectionProps) => {
     subCopyRef = useRef<HTMLSpanElement>(null),
     mainInnerRef = useRef<HTMLDivElement>(null),
     textWrapRef = useRef<HTMLDivElement>(null);
+  //innerBackRef = useRef<HTMLDivElement>(null);
 
   const addToRefs = (el: HTMLSpanElement | null) => {
     if (el && !txtRef.current.includes(el)) {
@@ -75,9 +76,9 @@ const Section1 = ({ isLoading }: SectionProps) => {
 
       let main = gsap.timeline({
         scrollTrigger: {
-          trigger: mainInnerRef.current,
+          trigger: mainbgRef.current,
           start: 'top top',
-          end: 'bottom 30%',
+          end: 'bottom 40%',
           scrub: 2,
           //markers: true,
           invalidateOnRefresh: true,
@@ -87,7 +88,7 @@ const Section1 = ({ isLoading }: SectionProps) => {
       });
       main
         .fromTo(
-          sectionRef1.current,
+          mainInnerRef.current,
           {
             clipPath: 'polygon(0 0, 100% 0%, 100% 100%, 0 100%)',
           },
@@ -95,10 +96,23 @@ const Section1 = ({ isLoading }: SectionProps) => {
             clipPath: 'polygon(0 0, 100% 0%, 0% 100%, 100% 100%)',
           }
         )
-        .to(textWrapRef.current, { y: -600, x: -400 }, '<');
+        // .fromTo(
+        //   innerBackRef.current,
+        //   {
+        //     clipPath: 'polygon(0 0, 100% 0%, 0% 100%, 100% 100%)',
+        //   },
+        //   {
+        //     clipPath: 'polygon(0 0, 100% 0%, 100% 100%, 0% 100%)',
+        //   },
+        //   '<+=0.2'
+        // )
+        .to(textWrapRef.current, { scale: 0.7, y: 180, x: -260 }, '<');
     });
 
-    return () => ctx.revert();
+    /**
+     * 언마운트의 경우 gsap clean up
+     */
+    // return () => ctx.revert();
   }, [isLoading]);
 
   return (
@@ -456,9 +470,11 @@ const Section1 = ({ isLoading }: SectionProps) => {
             </span>
           </div>
         </div>
-        <div className='main-visual'></div>
         <div className='main-bg' ref={mainbgRef}></div>
       </div>
+      {/* <div className='inner-back' ref={innerBackRef}>
+        <span></span>
+      </div> */}
     </section>
   );
 };

@@ -125,6 +125,21 @@ $imgUrl: '../images';
     height: 100vh;
     transform-style: preserve-3d;
   }
+  .inner-back {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    mix-blend-mode: luminosity;
+    span {
+      display: block;
+      height: 100%;
+      background: url(#{$imgUrl}/main_bg.webp) no-repeat top fixed;
+      background-size: cover;
+    }
+  }
 
   .main-visual {
     position: absolute;

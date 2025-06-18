@@ -13,6 +13,10 @@ const App = () => {
   const [loadingComplete, setLoadingComplete] = useState(false);
   const smootherRef = useRef<ScrollSmoother | null>(null);
 
+  const smotherPaused = () => {
+    smootherRef.current?.paused(false);
+  };
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -23,18 +27,29 @@ const App = () => {
       smoothTouch: 0.1,
     });
 
-    return () => {
-      if (smootherRef.current) {
-        smootherRef.current.kill();
-        smootherRef.current = null;
-      }
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
+    smootherRef.current?.paused(true);
+    /**
+     * 언마운트의 경우 gsap clean up
+     */
+    // return () => {
+    //   if (smootherRef.current) {
+    //     smootherRef.current.kill();
+    //     smootherRef.current = null;
+    //   }
+    //   ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    // };
   }, []);
 
   return (
     <>
-      {!loadingComplete && <Loader onLoaded={() => setLoadingComplete(true)} />}
+      {!loadingComplete && (
+        <Loader
+          onLoaded={() => {
+            smotherPaused();
+            setLoadingComplete(true);
+          }}
+        />
+      )}
       <div id='smooth-wrapper'>
         <div id='smooth-content'>
           <div className='container'>
