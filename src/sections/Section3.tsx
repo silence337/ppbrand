@@ -1,19 +1,20 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import TextAnimationUp from '../components/TextAnimationUp';
 
 interface SectionProps {
   isLoading: boolean;
 }
 
 const Section3 = ({ isLoading }: SectionProps) => {
-  const hasAnimated = useRef(false),
-    sectionRef3 = useRef<HTMLDivElement>(null),
-    canvasRef = useRef<HTMLCanvasElement>(null),
-    sequenceRef = useRef<HTMLDivElement>(null),
-    images = useRef<HTMLImageElement[]>([]),
-    seq = useRef<{ frame: number }>({ frame: 0 }),
-    topTextRef = useRef<HTMLDivElement>(null),
-    galleryRef = useRef<HTMLDivElement>(null);
+  const hasAnimated = useRef(false);
+  const sectionRef3 = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const sequenceRef = useRef<HTMLDivElement>(null);
+  const images = useRef<HTMLImageElement[]>([]);
+  const seq = useRef<{ frame: number }>({ frame: 0 });
+  const topTextRef = useRef<HTMLDivElement>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
 
   const frameCount = 96;
   const currentFrame = (index: number): string => {
@@ -54,21 +55,21 @@ const Section3 = ({ isLoading }: SectionProps) => {
 
     images.current[0].onload = render;
 
-    const ctxText = gsap.context(() => {
-      let topTextArea = gsap.timeline({
-        defaults: { duration: 3 },
-        scrollTrigger: {
-          trigger: topTextRef.current,
-          start: 'top 30%',
-          end: 'bottom bottom',
-          scrub: 1,
-          //markers: true,
-          invalidateOnRefresh: true,
-        },
-      });
-      topTextArea.fromTo('h4 span', { y: 194 }, { y: 0 });
-      topTextArea.fromTo('p span', { y: -194 }, { y: 0 });
-    }, topTextRef);
+    // const ctxText = gsap.context(() => {
+    //   let topTextArea = gsap.timeline({
+    //     defaults: { duration: 10 },
+    //     scrollTrigger: {
+    //       trigger: topTextRef.current,
+    //       start: 'top 30%',
+    //       end: 'bottom bottom',
+    //       scrub: 1,
+    //       //markers: true,
+    //       invalidateOnRefresh: true,
+    //     },
+    //   });
+    //   topTextArea.fromTo('h4 span', { y: 194 }, { y: 0, duration: 10 });
+    //   topTextArea.fromTo('p span', { y: -194 }, { y: 0, duration: 10 });
+    // }, topTextRef);
 
     let scrollSequence = gsap.timeline({
       onUpdate: render,
@@ -144,10 +145,10 @@ const Section3 = ({ isLoading }: SectionProps) => {
     <section className='section3 group' ref={sectionRef3}>
       <div className='top-text' ref={topTextRef}>
         <h4>
-          <span>Sustainability / Craftsmanship</span>
+          <TextAnimationUp text={'Browse the new collection'} />
         </h4>
         <p className='pintext'>
-          <span>Designed to Last</span>
+          <TextAnimationUp text={'Timeless fashion. Effortless confidence.'} />
         </p>
       </div>
 

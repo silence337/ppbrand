@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import bg from '../assets/images/section3_bg.webp';
 import sbi1 from '../assets/images/sbi_img1.jpg';
@@ -14,10 +14,10 @@ interface SectionProps {
 
 const Section2 = ({ isLoading }: SectionProps) => {
   const hasAnimated = useRef(false);
-  const motion1 = useRef<HTMLDivElement>(null),
-    motion2 = useRef<HTMLDivElement>(null),
-    motion3 = useRef<HTMLDivElement>(null),
-    sbiImg = useRef<HTMLUListElement>(null);
+  const motion1 = useRef<HTMLDivElement>(null);
+  const motion2 = useRef<HTMLDivElement>(null);
+  const motion3 = useRef<HTMLDivElement>(null);
+  const sbiImg = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     if (!isLoading) return;
@@ -45,7 +45,7 @@ const Section2 = ({ isLoading }: SectionProps) => {
       const prevSection = gsap.timeline({
         scrollTrigger: {
           trigger: motion1.current,
-          start: 'top 70%',
+          start: 'top 60%',
           end: 'bottom 180%',
           scrub: 0,
           //markers: true,

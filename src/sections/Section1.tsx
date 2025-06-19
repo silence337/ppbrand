@@ -1,32 +1,37 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import TextAnimationType from '../components/TextAnimationType';
 
 interface SectionProps {
   isLoading: boolean;
 }
 
 const Section1 = ({ isLoading }: SectionProps) => {
-  const hasAnimated = useRef(false),
-    sectionRef1 = useRef<HTMLDivElement>(null),
-    txtRef = useRef<HTMLSpanElement[]>([]),
-    brandSVGRef = useRef<HTMLDivElement>(null),
-    mainbgRef = useRef<HTMLDivElement>(null),
-    subCopyRef = useRef<HTMLSpanElement>(null),
-    mainInnerRef = useRef<HTMLDivElement>(null),
-    textWrapRef = useRef<HTMLDivElement>(null);
-  //innerBackRef = useRef<HTMLDivElement>(null);
+  const hasAnimated = useRef(false);
+  const sectionRef1 = useRef<HTMLDivElement>(null);
+  const txtRef = useRef<HTMLSpanElement[]>([]);
+  const brandSVGRef = useRef<HTMLDivElement>(null);
+  const mainbgRef = useRef<HTMLDivElement>(null);
+  const subCopyRef = useRef<HTMLSpanElement>(null);
+  const mainInnerRef = useRef<HTMLDivElement>(null);
+  const textWrapRef = useRef<HTMLDivElement>(null);
+  const innerBackRef = useRef<HTMLDivElement>(null);
 
-  const addToRefs = (el: HTMLSpanElement | null) => {
-    if (el && !txtRef.current.includes(el)) {
-      txtRef.current.push(el);
-    }
-  };
+  const [showTextIndex, setShowTextIndex] = useState(0);
 
   useEffect(() => {
     if (!isLoading) return;
 
     if (hasAnimated.current) return;
     hasAnimated.current = true;
+
+    const timer = setInterval(() => {
+      setShowTextIndex((prev) => {
+        if (prev < 2) return prev + 1;
+        clearInterval(timer);
+        return prev;
+      });
+    }, 500);
 
     const ctx = gsap.context(() => {
       // gsap animate
@@ -56,16 +61,6 @@ const Section1 = ({ isLoading }: SectionProps) => {
           },
         });
       }
-      gsap.to(mainText, {
-        y: 0,
-        duration: 0.5,
-        delay: 0.5,
-        stagger: 0.3,
-        ease: 'power1.inOut',
-        onComplete: () => {
-          brandSVGRef.current?.classList.add('animated');
-        },
-      });
       gsap.to(subCopyRef.current, {
         y: 0,
         duration: 1.5,
@@ -74,12 +69,24 @@ const Section1 = ({ isLoading }: SectionProps) => {
         ease: 'power1.inOut',
       });
 
+      let mainback = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef1.current!.querySelector('.line'),
+          start: 'top top',
+          end: 'bottom 40%',
+          scrub: 2,
+          //markers: true,
+          invalidateOnRefresh: true,
+          pin: true,
+          pinSpacing: false,
+        },
+      });
       let main = gsap.timeline({
         scrollTrigger: {
           trigger: mainbgRef.current,
           start: 'top top',
           end: 'bottom 40%',
-          scrub: 2,
+          scrub: 0,
           //markers: true,
           invalidateOnRefresh: true,
           pin: true,
@@ -96,28 +103,19 @@ const Section1 = ({ isLoading }: SectionProps) => {
             clipPath: 'polygon(0 0, 100% 0%, 0% 100%, 100% 100%)',
           }
         )
-        // .fromTo(
-        //   innerBackRef.current,
-        //   {
-        //     clipPath: 'polygon(0 0, 100% 0%, 0% 100%, 100% 100%)',
-        //   },
-        //   {
-        //     clipPath: 'polygon(0 0, 100% 0%, 100% 100%, 0% 100%)',
-        //   },
-        //   '<+=0.2'
-        // )
         .to(textWrapRef.current, { scale: 0.7, y: 180, x: -260 }, '<');
     });
 
     /**
      * 언마운트의 경우 gsap clean up
      */
-    // return () => ctx.revert();
+    return () => {
+      clearInterval(timer);
+    };
   }, [isLoading]);
 
   return (
     <section className='section1 group' ref={sectionRef1}>
-      <div className='line'></div>
       <div className='inner' ref={mainInnerRef}>
         <div className='main-text' ref={textWrapRef}>
           <div className='brandsvg' ref={brandSVGRef}>
@@ -459,10 +457,10 @@ const Section1 = ({ isLoading }: SectionProps) => {
 
           <div className='text-inner'>
             <p>
-              <span ref={addToRefs}>Explore the</span>
+              {showTextIndex >= 1 && <TextAnimationType text={'Explore the'} />}
             </p>
             <p>
-              <span ref={addToRefs}>Collection</span>
+              {showTextIndex >= 2 && <TextAnimationType text={'Collection'} />}
             </p>
             <span className='dec' ref={subCopyRef}>
               From minimal essentials to bold silhouettes, our latest line
@@ -472,9 +470,7 @@ const Section1 = ({ isLoading }: SectionProps) => {
         </div>
         <div className='main-bg' ref={mainbgRef}></div>
       </div>
-      {/* <div className='inner-back' ref={innerBackRef}>
-        <span></span>
-      </div> */}
+      <div className='line' ref={innerBackRef}></div>
     </section>
   );
 };

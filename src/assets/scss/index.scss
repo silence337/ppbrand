@@ -3,10 +3,10 @@
 $imgUrl: '../images';
 
 @use 'sass:math';
-@import 'common/_mixin';
-@import 'common/_reset';
-@import 'common/_keyframe';
-@import 'common/_svg';
+@use 'common/mixin';
+@use 'common/reset';
+@use 'common/keyframe';
+@use 'common/svg';
 
 .container {
   font-family: 'Lora', serif;
@@ -107,17 +107,21 @@ $imgUrl: '../images';
 .section1 {
   z-index: 3;
   height: 100vh;
+  overflow: hidden;
   background-color: #fff9ec;
 
   .line {
     position: absolute;
     left: 0;
     top: 0;
-    z-index: 2;
+    z-index: -1;
     width: 100%;
     height: 100vh;
     border: 5px solid #fff9ec;
     border-bottom: 0;
+    background: url(#{$imgUrl}/main_bg.webp) no-repeat top center;
+    background-size: cover;
+    filter: grayscale(60%);
   }
 
   .inner {
@@ -189,7 +193,7 @@ $imgUrl: '../images';
     width: 1400px;
     margin: 0 auto;
     mix-blend-mode: plus-lighter;
-    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 
     .text-inner {
       position: absolute;
@@ -199,22 +203,13 @@ $imgUrl: '../images';
       color: #ff7800;
       line-height: 1;
 
+      .text-animation-type {
+        display: inline-block;
+        opacity: 0;
+      }
+
       p {
-        position: relative;
-        line-height: 1;
-        overflow: hidden;
-
-        span {
-          display: block;
-          width: 100%;
-          overflow: hidden;
-          transform: translateY(-100%);
-        }
-
-        &:nth-child(2) span {
-          font-family: 'Roboto', sans-serif;
-          font-size: 174px;
-        }
+        font-weight: 500;
       }
 
       .dec {
@@ -228,6 +223,7 @@ $imgUrl: '../images';
         font-weight: 100;
         color: #fff;
         opacity: 0;
+        will-change: transform;
         transform: translateY(200px);
       }
     }
@@ -530,20 +526,26 @@ $imgUrl: '../images';
   letter-spacing: -2px;
 
   .top-text {
+    padding-bottom: 100px;
+    font-family: 'system ui';
+
     span {
-      display: block;
+      display: inline-block;
     }
 
     h4 {
-      height: 194px;
+      position: relative;
+      line-height: 99px;
       overflow: hidden;
-      font-size: 129px;
-      transform: translateY('194px');
+      font-size: 79px;
+      font-weight: 400;
     }
     p.pintext {
-      height: 194px;
+      position: relative;
+      line-height: 43px;
       overflow: hidden;
-      font-size: 129px;
+      font-size: 41px;
+      color: #cfc7bd;
     }
   }
 
@@ -700,19 +702,6 @@ $imgUrl: '../images';
         }
       }
     }
-    // @for $i from 1 through 4 {
-    //     li:nth-child(#{$i})::after{
-    //         content:'';
-    //         position:absolute;
-    //         left:0;
-    //         top:0;
-    //         z-index: -1;
-    //         width:100%;
-    //         height:100%;
-    //         background-image: url(#{$imgUrl}/gl_#{$i}.jpg);
-    //         filter: blur(5px);
-    //     }
-    // }
   }
 }
 

@@ -1,83 +1,92 @@
 @charset "utf-8";
 
 $breakpoints: (
-  'mobile': (max-width: 960px),
-  'tablet': (max-width:1145px),
-  'wide': (min-width:1921px)
+  'mobile': (
+    max-width: 960px,
+  ),
+  'tablet': (
+    max-width: 1145px,
+  ),
+  'wide': (
+    min-width: 1921px,
+  ),
 );
-
 
 @mixin mq($name) {
   $raw-query: map-get($breakpoints, $name);
 
   @if $raw-query {
-	$query: if(
-	  type-of($raw-query) == 'string',
-	  unquote($raw-query),
-	  inspect($raw-query)
-	);
+    $query: if(
+      type-of($raw-query) == 'string',
+      unquote($raw-query),
+      inspect($raw-query)
+    );
 
-	@media #{$query} {
-	  @content;
-	}
+    @media #{$query} {
+      @content;
+    }
   } @else {
-	@error 'No value found for `#{$name}`. '
+    @error 'No value found for `#{$name}`. '
 		 + 'Please make sure it is defined in `$breakpoints` map.';
   }
 }
 
-@mixin fontSize($w, $tablet, $m){
-	font-size:$w + px;
-	@include mq(tablet){
-		font-size:($tablet * 100) / 1240 + vw;
-	}
-	@include mq(mobile){
-		font-size:$m + px;
-	}
+@mixin fontSize($w, $tablet, $m) {
+  font-size: $w + px;
+  @include mq(tablet) {
+    font-size: ($tablet * 100) / 1240 + vw;
+  }
+  @include mq(mobile) {
+    font-size: $m + px;
+  }
 }
 
-
 @mixin fontSetting($size, $weight, $fontColor, $lineheight) {
-	font-size:$size;
-	font-weight:$weight;
-	color:$fontColor;
-	line-height:$lineheight;
+  font-size: $size;
+  font-weight: $weight;
+  color: $fontColor;
+  line-height: $lineheight;
 }
 
 @mixin fontSet($fontColor, $size) {
-	color:$fontColor;
-	font-size:$size;
+  color: $fontColor;
+  font-size: $size;
 }
 
-@mixin backgroundSetting($backgroundRepeat, $backgroundPosition, $backgroundSize, $backgroundImg) {
-	background-repeat:$backgroundRepeat;
-	background-position:$backgroundPosition;
-	background-size:$backgroundSize;
-	background-image:$backgroundImg;
+@mixin backgroundSetting(
+  $backgroundRepeat,
+  $backgroundPosition,
+  $backgroundSize,
+  $backgroundImg
+) {
+  background-repeat: $backgroundRepeat;
+  background-position: $backgroundPosition;
+  background-size: $backgroundSize;
+  background-image: $backgroundImg;
 }
 
-@mixin afterBefore{
-	display:inline-block;
-	content:'';
+@mixin afterBefore {
+  display: inline-block;
+  content: '';
 }
 
 // text blind hidden
-@mixin textHidden{
-	font-size:0;
-	//text-indent:-9999px;
-	line-height:0;
-	@content;
+@mixin textHidden {
+  font-size: 0;
+  //text-indent:-9999px;
+  line-height: 0;
+  @content;
 }
 
 // ellipsis text
-@mixin ellipsis{
-	white-space:nowrap;
-	overflow:hidden;
-	word-break:break-all;
-	text-overflow:ellipsis;
-	-o-text-overflow: ellipsis;
-	vertical-align:middle;
-	display:inline-block;
+@mixin ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  vertical-align: middle;
+  display: inline-block;
 }
 
 // position mixin
@@ -86,73 +95,75 @@ $breakpoints: (
 // @include relative(left 0 top 0);
 @mixin position($position, $args) {
   @each $o in top right bottom left {
-	$i: index($args, $o);
-	@if $i and $i + 1<= length($args) and type-of(nth($args, $i + 1)) == number  {
-		#{$o}: nth($args, $i + 1);
-		}
-	}
+    $i: index($args, $o);
+    @if $i and $i + 1<= length($args) and type-of(nth($args, $i + 1)) == number
+    {
+      #{$o}: nth($args, $i + 1);
+    }
+  }
   position: $position;
 }
 
 @mixin absolute($args) {
-	@include position(absolute, $args);
+  @include _mixin.position(absolute, $args);
 }
 @mixin fixed($args) {
-	@include position(fixed, $args);
+  @include _mixin.position(fixed, $args);
 }
 @mixin relative($args) {
-	@include position(relative, $args);
+  @include _mixin.position(relative, $args);
 }
 
 @mixin layoutMinWidth {
-	min-width:128rem;
-	@content;
+  min-width: 128rem;
+  @content;
 }
 
 @mixin deskMaxWidth {
-	max-width:128rem;
-	margin:0 auto;
-	@content;
+  max-width: 128rem;
+  margin: 0 auto;
+  @content;
 }
 
 @mixin mobileMaxWidth {
-	max-width:75rem;
-	margin:0 auto;
-	@content;
+  max-width: 75rem;
+  margin: 0 auto;
+  @content;
 }
 
-@mixin clearfix($selector) { //before, after 선택해서 쓰기
-	&::#{$selector} {
-		content:'';
-		clear:both;
-		display:block;
-		overflow:hidden;
-	}
+@mixin clearfix($selector) {
+  //before, after 선택해서 쓰기
+  &::#{$selector} {
+    content: '';
+    clear: both;
+    display: block;
+    overflow: hidden;
+  }
 }
 
 @mixin flex($justify, $align) {
-	display:-webkit-flex;
-	display:-moz-flex;
-	display:-ms-flex;
-	display:flex;
-	justify-content:$justify;
-	align-items:$align;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
 }
 
-@mixin placeHolder{
-	color:#bcbcbc; 
-	font-size:1.4rem; 
-	font-weight:400;
+@mixin placeHolder {
+  color: #bcbcbc;
+  font-size: 1.4rem;
+  font-weight: 400;
 }
 
 @mixin BebasNeuePro($set) {
-	font-family: 'BebasNeuePro-#{$set}';
-	@include mq(mobile){
-	//	letter-spacing:-0.1rem;
-	}
+  font-family: 'BebasNeuePro-#{$set}';
+  @include mq(mobile) {
+    //	letter-spacing:-0.1rem;
+  }
 }
 
-@mixin openSans($s){
-	font-family:'Open Sans';
-	font-size:$s;
+@mixin openSans($s) {
+  font-family: 'Open Sans';
+  font-size: $s;
 }

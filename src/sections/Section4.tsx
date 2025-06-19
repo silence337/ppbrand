@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
 interface SectionProps {
@@ -6,8 +6,8 @@ interface SectionProps {
 }
 
 const Section4 = ({ isLoading }: SectionProps) => {
-  const hasAnimated = useRef(false),
-    sectionRef4 = useRef<HTMLDivElement>(null);
+  const hasAnimated = useRef(false);
+  const sectionRef4 = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isLoading) return;
