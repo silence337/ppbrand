@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import bg from '../assets/images/section3_bg.webp';
 import sbi1 from '../assets/images/sbi_img1.jpg';
