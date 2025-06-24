@@ -3,7 +3,7 @@
 @use 'sass:math';
 @use 'common/mixin';
 @use 'common/reset';
-@use 'common/fonts';
+@use './common/fonts';
 @use 'common/keyframe';
 @use 'common/svg';
 @use 'preloader';

@@ -54,7 +54,7 @@ const Section2 = ({ isLoading }: SectionProps) => {
           start: 'top 50%',
           end: 'bottom bottom',
           scrub: 3,
-          markers: true,
+          //markers: true,
         },
       });
       tlWoman

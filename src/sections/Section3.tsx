@@ -110,7 +110,7 @@ const Section3 = ({ isLoading }: SectionProps) => {
         pin: true,
         pinSpacing: false,
         invalidateOnRefresh: true,
-        markers: true,
+        //markers: true,
         toggleClass: 'animated',
       },
     });

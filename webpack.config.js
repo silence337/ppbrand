@@ -34,28 +34,43 @@ module.exports = {
 				loader: 'babel-loader',
 				options: {
 					presets: [
-						'@babel/preset-env',
-						'@babel/preset-react',
-						{
-							"runtime": "automatic" //JSX 자동 변환
-						},
-						'@babel/preset-typescript'
+						['@babel/preset-env', { targets: 'defaults' }],
+						['@babel/preset-react', { runtime: 'automatic' }],
+						'@babel/preset-typescript',
 					],
 				}
 			}
 		},
-
 		{
-			test: /.s?css$/,
-			use: [
-				
-				{
-					loader: MiniCssExtractPlugin.loader,
-				},
-				'css-loader', 
-				'sass-loader',
-			  ],
+			test: /\.(woff2?|eot|ttf|otf)$/,
+			type: 'asset/resource',
+			generator: {
+				filename: 'fonts/[name][ext]',
+			},
 		},
+		{
+			test: /\.s[ac]ss$/i,
+			use: [
+				MiniCssExtractPlugin.loader,
+				{
+				loader: 'css-loader',
+				options: { sourceMap: true },
+				},
+				{
+				loader: 'resolve-url-loader',
+				options: { sourceMap: true },
+				},
+				{
+				loader: 'sass-loader',
+				options: {
+					sourceMap: true, // 필수!
+					sassOptions: {
+					includePaths: [path.resolve(__dirname, 'src/assets')],
+					},
+				},
+				},
+			],
+		}
 		],
 	},
 	plugins: [
@@ -76,9 +91,12 @@ module.exports = {
 			minify: true,
 			scriptLoading: 'blocking'
 		}),
-		new CopyWebpackPlugin({'patterns': [
-			{from:'./public/images', to:'images'}
-		]}),
+		new CopyWebpackPlugin({
+		patterns: [
+			{ from: './public/images', to: 'images' },
+			{ from: './src/assets/fonts', to: 'fonts' }
+		],
+		}),
 	],
 	devServer: {
 		static:{
