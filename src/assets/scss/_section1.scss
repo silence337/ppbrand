@@ -1,0 +1,150 @@
+@use 'common/mixin';
+
+$imgUrl: '../images';
+
+//------------------------ SECTION 1
+.section1 {
+  z-index: 3;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #fff9ec;
+
+  .line {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100vh;
+    border: 5px solid #fff9ec;
+    border-bottom: 0;
+    background: url(#{$imgUrl}/main_bg.webp) no-repeat top center;
+    background-size: cover;
+    filter: grayscale(60%);
+  }
+
+  .inner {
+    width: 100%;
+    height: 100vh;
+    transform-style: preserve-3d;
+  }
+  .inner-back {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    mix-blend-mode: luminosity;
+    span {
+      display: block;
+      height: 100%;
+      background: url(#{$imgUrl}/main_bg.webp) no-repeat top fixed;
+      background-size: cover;
+    }
+  }
+
+  .main-visual {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+
+    //background: url(#{$imgUrl}/main_bg_wm.webp) no-repeat top center;
+    background-size: cover;
+  }
+  .main-bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    z-index: 1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: url(#{$imgUrl}/main_bg.webp) no-repeat top center;
+    background-size: cover;
+
+    div {
+      opacity: 0;
+      background-color: #00000078;
+      //transition:1s;
+    }
+    &::before {
+      content: '';
+      position: absolute;
+      left: 2%;
+      top: 2%;
+      width: 96%;
+      height: 96%;
+      border: 1px solid #fff;
+      opacity: 0.3;
+    }
+  }
+  .main-text {
+    position: relative;
+    z-index: 3;
+    width: 1400px;
+    margin: 0 auto;
+    mix-blend-mode: plus-lighter;
+    font-family: 'NeueMontreal-Medium';
+
+    .text-inner {
+      position: absolute;
+      left: 0;
+      top: 74px;
+      font-size: 113px;
+      color: #ff7800;
+      line-height: 1;
+
+      .text-animation-type {
+        display: inline-block;
+        opacity: 0;
+      }
+
+      p {
+        font-weight: 500;
+      }
+
+      .dec {
+        position: absolute;
+        top: 642px;
+        width: 798px;
+        right: -439px;
+        font-size: 35px;
+        line-height: 1;
+        text-align: right;
+        font-weight: 100;
+        color: #fff;
+        font-family: 'NeueMontreal-Book';
+        opacity: 0;
+        will-change: transform;
+        transform: translateY(200px);
+      }
+    }
+    .brandsvg {
+      position: absolute;
+      left: -29px;
+      top: 269px;
+      transform: rotate(-5deg);
+      width: 668px;
+      z-index: 1;
+      visibility: hidden;
+      mix-blend-mode: color-burn;
+    }
+  }
+
+  .image-box {
+    position: absolute;
+    left: 792px;
+    top: 430px;
+    width: 500px;
+    height: 440px;
+    background: #ff5e00;
+  }
+}

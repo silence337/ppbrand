@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import TextAnimationUp from '../components/TextAnimationUp';
 
@@ -7,7 +7,7 @@ interface SectionProps {
 }
 
 const Section3 = ({ isLoading }: SectionProps) => {
-  const hasAnimated = useRef(false);
+  const hasMountedOnce = useRef(false);
   const sectionRef3 = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sequenceRef = useRef<HTMLDivElement>(null);
@@ -15,64 +15,92 @@ const Section3 = ({ isLoading }: SectionProps) => {
   const seq = useRef<{ frame: number }>({ frame: 0 });
   const topTextRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
-
   const frameCount = 96;
-  const currentFrame = (index: number): string => {
-    return `./images/${(index + 1).toString().padStart(2, '0')}-min.jpg`;
+  const dataXValues = [-250, 300, -250, 300, -250, 300, -250, 300];
+  const liTextContent = [
+    {
+      title: 'Timeless Grace',
+      des: 'Redefining Classic Elegance',
+    },
+    {
+      title: 'Desert Bloom',
+      des: 'Soft Tones, Strong Statements',
+    },
+    {
+      title: 'Noir Allure',
+      des: 'Darkness Has Its Charm',
+    },
+    {
+      title: 'Nordic Calm',
+      des: 'Clean Lines, Quiet Luxury',
+    },
+    {
+      title: 'Future Form',
+      des: 'Style in the Age of Innovation',
+    },
+    {
+      title: 'Boho Drift',
+      des: 'Free Spirit, Refined Aesthetic',
+    },
+    {
+      title: 'Midnight Garden',
+      des: 'Where Romance Meets Mystery',
+    },
+    {
+      title: 'Urban Edge',
+      des: 'Where City Meets Style',
+    },
+  ];
+
+  const preloadImages = (): Promise<void> => {
+    return new Promise((resolve) => {
+      images.current = [];
+      const currentFrame = (index: number): string =>
+        `./images/${(index + 1).toString().padStart(2, '0')}-min.jpg`;
+
+      let loaded = 0;
+      for (let i = 0; i < frameCount; i++) {
+        const img = new Image();
+        img.src = currentFrame(i);
+        img.onload = () => {
+          loaded++;
+          if (loaded === frameCount) resolve();
+        };
+        images.current.push(img);
+      }
+    });
   };
 
-  useEffect(() => {
-    if (!isLoading) return;
-
-    if (hasAnimated.current) return;
-    hasAnimated.current = true;
-
+  /**
+   * canvas draw image and gsap scroll motion
+   */
+  const initCanvasSequence = async () => {
     const canvas = canvasRef.current;
-    const section = sequenceRef.current;
-    if (!canvas || !section) return;
+    if (!canvas) return;
 
     const context = canvas.getContext('2d');
     if (!context) return;
 
-    canvas.width = 490;
-    canvas.height = 928;
-
-    for (let i = 0; i < frameCount; i++) {
-      const img = new Image();
-      img.src = currentFrame(i);
-      images.current.push(img);
-    }
-
-    const render = () => {
-      const frame = Math.floor(seq.current.frame);
-      const img = images.current[frame];
-
+    const render = (getFrame: number) => {
+      const context = canvasRef.current?.getContext('2d');
+      if (!context) return;
+      const img = images.current[getFrame];
       if (!img || !img.complete) return;
 
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.drawImage(img, 0, 0);
     };
 
-    images.current[0].onload = render;
+    await preloadImages();
+    render(seq.current.frame);
 
-    // const ctxText = gsap.context(() => {
-    //   let topTextArea = gsap.timeline({
-    //     defaults: { duration: 10 },
-    //     scrollTrigger: {
-    //       trigger: topTextRef.current,
-    //       start: 'top 30%',
-    //       end: 'bottom bottom',
-    //       scrub: 1,
-    //       //markers: true,
-    //       invalidateOnRefresh: true,
-    //     },
-    //   });
-    //   topTextArea.fromTo('h4 span', { y: 194 }, { y: 0, duration: 10 });
-    //   topTextArea.fromTo('p span', { y: -194 }, { y: 0, duration: 10 });
-    // }, topTextRef);
-
-    let scrollSequence = gsap.timeline({
-      onUpdate: render,
+    const tlCanvasSequence = gsap.timeline({
+      onUpdate() {
+        const progress = this.progress();
+        const newFrame = Math.floor(progress * (frameCount - 1));
+        seq.current.frame = newFrame;
+        render(newFrame);
+      },
       scrollTrigger: {
         trigger: sequenceRef.current,
         endTrigger: sectionRef3.current,
@@ -82,12 +110,12 @@ const Section3 = ({ isLoading }: SectionProps) => {
         pin: true,
         pinSpacing: false,
         invalidateOnRefresh: true,
-        //markers: true,
+        markers: true,
         toggleClass: 'animated',
       },
     });
 
-    scrollSequence.to(
+    tlCanvasSequence.to(
       seq.current,
       {
         frame: frameCount - 1,
@@ -98,13 +126,17 @@ const Section3 = ({ isLoading }: SectionProps) => {
       },
       0
     );
+    return tlCanvasSequence;
+  };
 
-    const ctxGallery = gsap.context(() => {
+  const scrollMotion = (ctx: gsap.Context) => {
+    ctx.add(() => {
       const liElements = gsap.utils.toArray(
         'li',
         galleryRef.current
       ) as HTMLElement[];
-      liElements.forEach((list) => {
+
+      liElements.forEach((list, i) => {
         const image = list.querySelector('img');
         gsap.to(image, {
           yPercent: -55,
@@ -116,20 +148,30 @@ const Section3 = ({ isLoading }: SectionProps) => {
             // markers: true,
           },
         });
-        let dataX = list.dataset.x;
+        const x = dataXValues[i];
         gsap.to(list, {
-          x: dataX,
+          x: x,
           ease: 'none',
+          immediateRender: false,
           scrollTrigger: {
             trigger: list.querySelector('span'),
             start: 'top 530px',
             end: 'bottom 60%',
             scrub: 0,
             invalidateOnRefresh: true,
-            //markers: true,
           },
         });
       });
+    });
+  };
+
+  useEffect(() => {
+    if (!isLoading || hasMountedOnce.current) return;
+    hasMountedOnce.current = true;
+
+    const ctx1 = gsap.context((ctx) => {
+      initCanvasSequence();
+      scrollMotion(ctx);
     }, galleryRef);
 
     /**
@@ -140,6 +182,11 @@ const Section3 = ({ isLoading }: SectionProps) => {
     //   ctxGallery.revert();
     // };
   }, [isLoading]);
+
+  useEffect(() => {
+    // canvas image frame 저장
+    localStorage.setItem('seq', seq.current.frame.toString());
+  }, [seq]);
 
   return (
     <section className='section3 group' ref={sectionRef3}>
@@ -154,7 +201,7 @@ const Section3 = ({ isLoading }: SectionProps) => {
 
       <div className='sequence-wrap' ref={sequenceRef}>
         <div className='sequence'>
-          <canvas ref={canvasRef}></canvas>
+          <canvas ref={canvasRef} width={490} height={928}></canvas>
         </div>
         <div className='back'>
           <span></span>
@@ -163,78 +210,17 @@ const Section3 = ({ isLoading }: SectionProps) => {
 
       <div className='gallery-list' ref={galleryRef}>
         <ul>
-          <li className='g1' data-x='-250'>
-            <span>
-              <img src='./images/gl_1.jpg' />
-            </span>
-            <div className='text'>
-              <h3>Timeless Grace</h3>
-              <p>Redefining Classic Elegance</p>
-            </div>
-          </li>
-          <li className='g2' data-x='300'>
-            <span>
-              <img src='./images/gl_2.jpg' />
-            </span>
-            <div className='text'>
-              <h3>Desert Bloom</h3>
-              <p>Soft Tones, Strong Statements</p>
-            </div>
-          </li>
-          <li className='g3' data-x='-250'>
-            <span>
-              <img src='./images/gl_3.jpg' />
-            </span>
-            <div className='text'>
-              <h3>Noir Allure</h3>
-              <p>Darkness Has Its Charm</p>
-            </div>
-          </li>
-          <li className='g4' data-x='300'>
-            <span>
-              <img src='./images/gl_4.jpg' />
-            </span>
-            <div className='text'>
-              <h3>Nordic Calm</h3>
-              <p>Clean Lines, Quiet Luxury</p>
-            </div>
-          </li>
-          <li className='g5' data-x='-250'>
-            <span>
-              <img src='./images/gl_5.jpg' />
-            </span>
-            <div className='text'>
-              <h3>Future Form</h3>
-              <p>Style in the Age of Innovation</p>
-            </div>
-          </li>
-          <li className='g6' data-x='300'>
-            <span>
-              <img src='./images/gl_6.jpg' />
-            </span>
-            <div className='text'>
-              <h3>Boho Drift</h3>
-              <p>Free Spirit, Refined Aesthetic</p>
-            </div>
-          </li>
-          <li className='g7' data-x='-250'>
-            <span>
-              <img src='./images/gl_7.jpg' />
-            </span>
-            <div className='text'>
-              <h3>Midnight Garden</h3>
-              <p>Where Romance Meets Mystery</p>
-            </div>
-          </li>
-          <li className='g8' data-x='300'>
-            <span>
-              <img src='./images/gl_8.jpg' />
-            </span>
-            <div className='text'>
-              <h3>Urban Edge</h3>
-              <p>Where City Meets Style</p>
-            </div>
-          </li>
+          {liTextContent.map(({ title, des }, i) => (
+            <li className={`g${i + 1}`} key={i}>
+              <span>
+                <img src={`./images/gl_${i + 1}.jpg`} alt='' />
+              </span>
+              <div className='text'>
+                <h3>{title}</h3>
+                <p>{des}</p>
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
     </section>

@@ -25,6 +25,9 @@ const Loader = ({ onLoaded }: LoaderProps) => {
         duration: 1,
         delay: 0.5,
         ease: 'power2.inOut',
+        onComplete: () => {
+          onLoaded();
+        },
       });
     }
 
@@ -34,9 +37,6 @@ const Loader = ({ onLoaded }: LoaderProps) => {
         duration: 1,
         delay: 1.5,
         ease: 'power2.inOut',
-        onComplete: () => {
-          onLoaded();
-        },
       });
       gsap.to(loaderImgElem.current.children, {
         y: -500,

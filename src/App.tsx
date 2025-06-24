@@ -23,7 +23,7 @@ const App = () => {
     smootherRef.current = ScrollSmoother.create({
       speed: 1,
       effects: true,
-      smooth: 2,
+      smooth: 3,
       smoothTouch: 0.1,
     });
 
@@ -42,14 +42,13 @@ const App = () => {
 
   return (
     <>
-      {!loadingComplete && (
-        <Loader
-          onLoaded={() => {
-            smotherPaused();
-            setLoadingComplete(true);
-          }}
-        />
-      )}
+      <Loader
+        onLoaded={() => {
+          smotherPaused();
+          setLoadingComplete(true);
+        }}
+      />
+
       <div id='smooth-wrapper'>
         <div id='smooth-content'>
           <div className='container'>

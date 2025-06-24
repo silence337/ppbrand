@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 
 const TextAnimationType = ({ text = 'default' }: { text: string }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const isInView = useInView(ref, { once: false });
 
   return (
     <>

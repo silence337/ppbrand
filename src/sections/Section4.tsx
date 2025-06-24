@@ -6,14 +6,12 @@ interface SectionProps {
 }
 
 const Section4 = ({ isLoading }: SectionProps) => {
-  const hasAnimated = useRef(false);
+  const hasMountedOnce = useRef(false);
   const sectionRef4 = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!isLoading) return;
-
-    if (hasAnimated.current) return;
-    hasAnimated.current = true;
+    if (!isLoading || hasMountedOnce.current) return;
+    hasMountedOnce.current = true;
 
     const ctx = gsap.context(() => {
       let tl = gsap.timeline({

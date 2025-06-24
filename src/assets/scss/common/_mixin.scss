@@ -30,27 +30,34 @@ $breakpoints: (
 		 + 'Please make sure it is defined in `$breakpoints` map.';
   }
 }
-
-@mixin fontSize($w, $tablet, $m) {
-  font-size: $w + px;
-  @include mq(tablet) {
-    font-size: ($tablet * 100) / 1240 + vw;
-  }
-  @include mq(mobile) {
-    font-size: $m + px;
-  }
+// mixin.vw(100)
+@function vw($px, $viewport: 1920) {
+  @return ($px / $viewport) * 100vw;
 }
-
-@mixin fontSetting($size, $weight, $fontColor, $lineheight) {
-  font-size: $size;
-  font-weight: $weight;
-  color: $fontColor;
-  line-height: $lineheight;
+// mixin.vh(100)
+@function vh($px, $viewport: 1080) {
+  @return ($px / $viewport) * 100vh;
 }
+// 최소값만 지정
+//font-size: mixin.minmax(16, 20);
 
-@mixin fontSet($fontColor, $size) {
-  color: $fontColor;
-  font-size: $size;
+// 최대값만 지정
+//font-size: mixin.minmax(null, 20, 28);
+
+// 아무 것도 없이 vw 값만
+//font-size: mixin.minmax(null, 20, null);
+@function minmax($min-px: null, $preferred-px, $max-px: null, $viewport: 1920) {
+  $preferred-vw: ($preferred-px / $viewport) * 100vw;
+
+  @if $min-px != null and $max-px != null {
+    @return clamp(#{$min-px}px, #{$preferred-vw}, #{$max-px}px);
+  } @else if $min-px != null {
+    @return max(#{$min-px}px, #{$preferred-vw});
+  } @else if $max-px != null {
+    @return min(#{$max-px}px, #{$preferred-vw});
+  } @else {
+    @return $preferred-vw;
+  }
 }
 
 @mixin backgroundSetting(

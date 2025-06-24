@@ -1,0 +1,28 @@
+//------------------------ SECTION 4
+.section4 {
+  height: 500px;
+  background-color: #d35400;
+
+  .text {
+    width: 1400px;
+    padding-top: 100px;
+    margin: 0 auto;
+    font-size: 110px;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    p {
+      position: relative;
+      line-height: 1;
+      overflow: hidden;
+      span {
+        display: block;
+      }
+    }
+    em {
+      display: block;
+      padding-top: 20px;
+      font-size: 20px;
+      line-height: 1;
+    }
+  }
+}

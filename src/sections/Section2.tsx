@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import bg from '../assets/images/section3_bg.webp';
 import sbi1 from '../assets/images/sbi_img1.jpg';
 import sbi2 from '../assets/images/sbi_img2.jpg';
 import sbi3 from '../assets/images/sbi_img3.jpg';
@@ -13,46 +12,78 @@ interface SectionProps {
 }
 
 const Section2 = ({ isLoading }: SectionProps) => {
-  const hasAnimated = useRef(false);
+  const hasMountedOnce = useRef(false);
   const motion1 = useRef<HTMLDivElement>(null);
   const motion2 = useRef<HTMLDivElement>(null);
   const motion3 = useRef<HTMLDivElement>(null);
   const sbiImg = useRef<HTMLUListElement>(null);
+  const sbiImages = [sbi1, sbi2, sbi3, sbi4, sbi5];
 
-  useEffect(() => {
-    if (!isLoading) return;
-
-    if (hasAnimated.current) return;
-    hasAnimated.current = true;
-
-    const ctxTimeline1 = gsap.context(() => {
-      const textElements = gsap.utils.toArray(
-        '.text',
-        motion1.current
-      ) as HTMLElement[];
-      textElements.forEach((text) => {
-        gsap.to(text, {
-          backgroundSize: '100%',
-          duration: 3, //ease: 'none',
-          scrollTrigger: {
-            trigger: text,
-            start: 'center 70%',
-            scrub: 1,
-          },
-        });
+  /**
+   * Elevate Your Everyday
+   */
+  const scrollMotion1 = (ctx: gsap.Context) => {
+    ctx.add(() => {
+      gsap.to('.inner', {
+        yPercent: -100,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.inner',
+          start: 'center 50%',
+          scrub: 0,
+        },
       });
+      gsap.to('.pin-text span', {
+        yPercent: -150,
+        duration: 1,
+        stagger: 0.2,
+        opacity: 1,
+        scaleY: 1,
+        scrollTrigger: {
+          trigger: '.pin-text',
+          endTrigger: motion1.current,
+          start: 'top 60%',
+          end: 'bottom bottom',
+          scrub: 3,
+          //markers: true,
+        },
+      });
+      const tlWoman = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.wm',
+          start: 'top 50%',
+          end: 'bottom bottom',
+          scrub: 3,
+          markers: true,
+        },
+      });
+      tlWoman
+        .to('.wm picture', {
+          x: 0,
+          duration: 1,
+        })
+        .to(
+          '.wm .back-obj',
+          {
+            x: 0,
+            rotate: '48deg',
+            scale: 1,
+            duration: 1,
+          },
+          '<'
+        );
 
-      const prevSection = gsap.timeline({
+      const tlPolygon = gsap.timeline({
         scrollTrigger: {
           trigger: motion1.current,
-          start: 'top 60%',
-          end: 'bottom 180%',
+          start: 'top 40%',
+          end: 'bottom bottom',
           scrub: 0,
           //markers: true,
           invalidateOnRefresh: true,
         },
       });
-      prevSection.fromTo(
+      tlPolygon.fromTo(
         motion1.current,
         {
           clipPath: 'polygon(0 0, 0% 0, 20% 100%, 0% 100%)',
@@ -63,7 +94,7 @@ const Section2 = ({ isLoading }: SectionProps) => {
         '<'
       );
 
-      let tl1 = gsap.timeline({
+      const tlEveryDay = gsap.timeline({
         scrollTrigger: {
           trigger: motion1.current,
           endTrigger: motion2.current,
@@ -75,37 +106,52 @@ const Section2 = ({ isLoading }: SectionProps) => {
           onUpdate: ({ progress, direction, isActive }) => {
             console.log(progress, direction, isActive);
 
-            if (progress < 0.21) {
+            if (progress < 0.12) {
               gsap.to(motion1.current, {
                 backgroundColor: '#fff',
+                color: 'rgb(255 192 5)',
+                duration: 1,
+              });
+              gsap.to('.pin-text', {
+                color: '#f56e0b',
                 duration: 1,
               });
               return;
             }
 
-            if (progress > 0.21) {
+            if (progress > 0.12) {
               gsap.to(motion1.current, {
-                backgroundColor: '#000',
+                backgroundColor: '#f56e0b',
+                color: '#fff',
+                duration: 1,
+              });
+              gsap.to('.pin-text', {
+                color: '#fff',
                 duration: 1,
               });
             }
           },
         },
       });
-      tl1
+      tlEveryDay
         .fromTo(
           '.back',
           { x: 0, y: -400, ease: 'none' },
           { x: 200, y: 200, autoAlpha: 1 }
         )
         .to('.back img', { x: -1000, ease: 'none' }, '<');
-    }, motion1);
+    });
+  };
 
-    let clientW = document.documentElement.clientWidth + 271;
-    let clientH = document.documentElement.clientHeight + 271;
+  const clientW = document.documentElement.clientWidth + 271;
+  const clientH = document.documentElement.clientHeight + 271;
 
-    const ctxTimeline2 = gsap.context(() => {
-      let tl2 = gsap.timeline({
+  /**
+   * Strong brand identity
+   */
+  const scrollMotion2 = (ctx: gsap.Context) => {
+    ctx.add(() => {
+      const tlStrongBrand = gsap.timeline({
         scrollTrigger: {
           trigger: motion2.current,
           start: 'top top',
@@ -118,7 +164,7 @@ const Section2 = ({ isLoading }: SectionProps) => {
         },
       });
 
-      tl2
+      tlStrongBrand
         .to('h3', { ease: 'none', scale: 0.2 })
         .fromTo(
           '.n1',
@@ -145,10 +191,15 @@ const Section2 = ({ isLoading }: SectionProps) => {
           { x: 0, y: 0 },
           '<'
         );
-    }, motion2);
+    });
+  };
 
-    const ctxTimeline3 = gsap.context(() => {
-      let tl3 = gsap.timeline({
+  /**
+   * Urban Edge
+   */
+  const scrollMotion3 = (ctx: gsap.Context) => {
+    ctx.add(() => {
+      const tlUrbanEdge = gsap.timeline({
         scrollTrigger: {
           trigger: motion3.current,
           start: 'top 60%',
@@ -158,24 +209,34 @@ const Section2 = ({ isLoading }: SectionProps) => {
           invalidateOnRefresh: true,
         },
       });
-      tl3.to(sbiImg.current, {
-        x: `${-(clientW / 1.2)}px`,
-        y: `${clientH}px`,
-        ease: 'none',
-      });
-      tl3.fromTo('.bg', { scale: 0.3, ease: 'none' }, { scale: 1 }, '<');
-      tl3
+      tlUrbanEdge
+        .to(sbiImg.current, {
+          x: `${-(clientW / 1.2)}px`,
+          y: `${clientH}px`,
+          ease: 'none',
+        })
+        .fromTo('.bg', { scale: 0.3, ease: 'none' }, { scale: 1 }, '<')
         .to('.text', { x: 500, ease: 'none' }, '<')
         .to('.sub-text', { y: 500, opacity: 1, ease: 'none' }, '<+=0.3')
         .to('.bg img', { y: 300, ease: 'none' }, '<-=0.1');
-    }, motion3);
+    });
+  };
+
+  useEffect(() => {
+    if (!isLoading || hasMountedOnce.current) return;
+    hasMountedOnce.current = true;
+
+    const ctx1 = gsap.context((ctx) => scrollMotion1(ctx), motion1);
+    const ctx2 = gsap.context((ctx) => scrollMotion2(ctx), motion2);
+    const ctx3 = gsap.context((ctx) => scrollMotion3(ctx), motion3);
+
     /**
      * 언마운트의 경우 gsap clean up
      */
     // return () => {
-    //   ctxTimeline1.revert();
-    //   ctxTimeline2.revert();
-    //   ctxTimeline3.revert();
+    //   ctx1.revert();
+    //   ctx2.revert();
+    //   ctx3.revert();
     // };
   }, [isLoading]);
 
@@ -189,18 +250,19 @@ const Section2 = ({ isLoading }: SectionProps) => {
             We use ethically sourced materials and sustainable
           </p>
           <p className='text'>practices to create fashion with a conscience.</p>
-
-          <div className='back'>
-            <span>
-              <img src={bg} />
-            </span>
-          </div>
-          <div className='back-text'>
-            <span>
-              AT [BRAND NAME], WE BELIEVE FASHION IS MORE THAN STYLE—IT'S A
-              STATEMENT. OUR PIECES ARE CRAFTED WITH INTENTION, BLENDING
-              INNOVATION WITH TRADITION.
-            </span>
+        </div>
+        <div className='pin-text'>
+          <span>we</span> <span>believe</span> <span>fashion</span>
+          <br />
+          <span>is more&nbsp;</span>
+          <span>than</span>
+          <br />
+          <span>style—it's</span>
+          <br />
+          <span>a statement.</span>
+          <div className='wm'>
+            <picture></picture>
+            <div className='back-obj'></div>
           </div>
         </div>
       </div>
@@ -211,22 +273,13 @@ const Section2 = ({ isLoading }: SectionProps) => {
           <br />
           identity
         </h3>
+
         <ul className='sbi-img' ref={sbiImg}>
-          <li className='n1'>
-            <img src={sbi1} alt='' />
-          </li>
-          <li className='n2'>
-            <img src={sbi2} alt='' />
-          </li>
-          <li className='n3'>
-            <img src={sbi3} alt='' />
-          </li>
-          <li className='n4'>
-            <img src={sbi4} alt='' />
-          </li>
-          <li className='n5'>
-            <img src={sbi5} alt='' />
-          </li>
+          {sbiImages.map((src, i) => (
+            <li className={`n${i + 1}`} key={i}>
+              <img src={src} alt='' />
+            </li>
+          ))}
         </ul>
       </div>
 

@@ -36,6 +36,9 @@ module.exports = {
 					presets: [
 						'@babel/preset-env',
 						'@babel/preset-react',
+						{
+							"runtime": "automatic" //JSX 자동 변환
+						},
 						'@babel/preset-typescript'
 					],
 				}

@@ -1,0 +1,84 @@
+//------------------------ PRELOADER
+.preloader {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  .progress {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #000;
+
+    p {
+      padding-top: 20px;
+      color: #fff;
+      font-size: 150px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      text-align: center;
+    }
+
+    .loading {
+      position: absolute;
+      left: 0;
+      top: 310px;
+      width: 100%;
+      animation: fadein 2s;
+    }
+
+    .spinner-wrapper {
+      position: absolute;
+      z-index: 15;
+      top: 0;
+      left: 50%;
+      width: 363px;
+      transform: translate(-50%, 0);
+    }
+
+    .spinner-text {
+      position: absolute;
+      top: 27px;
+      left: 50%;
+      text-transform: uppercase;
+      letter-spacing: 10px /4;
+      transform: translate(-36%, -50%);
+      animation: pulse 1.5s infinite;
+    }
+
+    .spinner {
+      margin: 0;
+      display: block;
+      position: absolute;
+      left: 88px;
+      top: 0;
+      border: 24px solid rebeccapurple;
+      width: 25px;
+      height: 25px;
+      border-left-color: transparent;
+      border-right-color: transparent;
+      border-radius: 50px;
+      animation: spin 1.5s infinite;
+    }
+  }
+  .loader-image {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+    }
+  }
+}

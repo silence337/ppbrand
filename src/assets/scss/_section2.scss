@@ -1,0 +1,324 @@
+$imgUrl: '../images';
+
+@mixin textSettings {
+  h3 {
+    font-family: 'NeueMontreal-Medium';
+    font-size: 120px;
+    line-height: 130px;
+  }
+  p {
+    font-family: 'Montserrat';
+    font-size: 30px;
+  }
+}
+
+//------------------------ SECTION 2
+.section2 {
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+  background-color: #f7d901;
+
+  .tl-motion1 {
+    position: relative;
+    top: -1px;
+    z-index: 2;
+    height: 1500px;
+    padding-top: 200px;
+    font-family: 'NeueMontreal-Medium';
+    color: rgb(255 192 5);
+    background-color: #fff;
+
+    .inner {
+      position: relative;
+      width: 1400px;
+      margin: 0 auto;
+      z-index: 2;
+      text-align: left;
+      font-size: 60px;
+
+      h3 {
+        //font-weight: 600;
+        line-height: 77px;
+
+        &:nth-child(2) {
+          padding-bottom: 30px;
+        }
+      }
+      p {
+        display: block;
+        overflow: hidden;
+        span {
+          display: block;
+        }
+      }
+      @include textSettings;
+    }
+
+    .pin-text {
+      position: relative;
+      width: 1400px;
+      padding-top: 300px;
+      margin: 0 auto;
+      text-align: left;
+      font-size: 95px;
+      line-height: 93px;
+      font-weight: 500;
+      color: #fff;
+      span {
+        //position: relative;
+        display: inline-block;
+        opacity: 0;
+        letter-spacing: -1px;
+        &:nth-child(3),
+        &:nth-child(8) {
+          font-family: 'NeueMontreal-Bold';
+          //font-weight: 700;
+          text-decoration: underline;
+        }
+      }
+
+      .wm {
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+        width: 800px;
+        height: 1081px;
+
+        picture {
+          display: block;
+          width: 100%;
+          height: 100%;
+          background: url(#{$imgUrl}/woman2.png);
+          transform: translate(200px, 0);
+        }
+
+        .back-obj {
+          position: absolute;
+          z-index: -1;
+          left: 0;
+          top: 0;
+          width: 1000px;
+          height: 1000px;
+          //background-color: #ffb405;
+          background: url(#{$imgUrl}/test.svg) no-repeat;
+          background-size: cover;
+          transform: translate(400px, 0) rotate(248deg) scale(0.7);
+          opacity: 0.2;
+        }
+      }
+    }
+
+    // .text {
+    //   color: rgb(255 192 5);
+    //   // background: linear-gradient(90deg, #fd8000, #d4fd00) no-repeat;
+    //   // -webkit-background-clip: text;
+    //   // background-clip: text;
+    //   // background-size: 0%;
+    //   // transition: background-size cubic-bezier(0.1, 0.5, 0.5, 1) 0.5s;
+    // }
+
+    .text-left {
+      position: absolute;
+      left: 0;
+      z-index: 2;
+      top: 700px;
+      height: auto;
+      font-optical-sizing: auto;
+      font-weight: 500;
+      font-size: 67px;
+
+      li:nth-child(2) {
+        font-size: 40px;
+        font-weight: 200;
+      }
+    }
+  }
+  .back {
+    width: 1520px;
+    padding-top: 440px;
+    text-align: center;
+    mix-blend-mode: hard-light;
+    span {
+      display: block;
+      clip-path: polygon(0 0, 48% 0, 100% 100%, 55% 100%);
+
+      img {
+        width: 1080px;
+      }
+    }
+  }
+  .back-text {
+    position: absolute;
+    left: 0;
+    top: 900px;
+    z-index: -1;
+
+    span {
+      animation: text-to 36s linear infinite;
+      color: #fff;
+      display: inline-block;
+      font-family: Roboto, sans-serif;
+      font-optical-sizing: auto;
+      font-size: 165px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+  }
+  .tl-motion2 {
+    position: relative;
+    z-index: 2;
+    height: 2070px;
+    background-color: #fff;
+
+    h3 {
+      padding-top: 300px;
+      font-size: 160px;
+      font-family: 'Roboto', sans-serif;
+      line-height: 1;
+      letter-spacing: -1px;
+      color: #ff3100;
+    }
+
+    .sbi-img {
+      position: relative;
+      top: -290px;
+
+      li {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+
+        &.n1 {
+          top: 0;
+          left: -50px;
+        }
+        &.n2 {
+          top: -30px;
+          left: 50px;
+        }
+        &.n3 {
+          top: 30px;
+          left: -60px;
+        }
+        &.n4 {
+          top: -60px;
+          left: 70px;
+        }
+        &.n5 {
+          top: 70px;
+          left: -30px;
+        }
+
+        img {
+          border-radius: 30px;
+        }
+      }
+    }
+  }
+
+  .tl-motion3 {
+    position: relative;
+    z-index: 3;
+    height: 1500px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      z-index: -1;
+      top: 500px;
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+    }
+
+    .inner {
+      position: relative;
+      width: 1400px;
+      margin: 0 auto;
+    }
+    .text,
+    .sub-text {
+      position: absolute;
+      left: 0;
+      top: 0;
+      text-align: left;
+      color: #000;
+    }
+
+    .text {
+      left: 500px;
+      z-index: 2;
+      text-align: right;
+
+      h3 {
+        font-size: 60px;
+      }
+      p {
+        font-size: 39px;
+      }
+    }
+    .sub-text {
+      width: 620px;
+      top: 150px;
+      font-size: 50px;
+      opacity: 0;
+    }
+
+    .bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 800px;
+      height: 1200px;
+      background: url(#{$imgUrl}/tlm3_bg.jpg) no-repeat;
+
+      .box {
+        position: absolute;
+        left: 250px;
+        top: 196px;
+        width: 425px;
+        height: 602px;
+        overflow: hidden;
+
+        img {
+          position: relative;
+          left: 50%;
+          top: -300px;
+          transform: translate(-50%, 0);
+        }
+      }
+    }
+  }
+  .back-inner {
+    position: absolute;
+    left: 0;
+    top: 200px;
+    width: 100%;
+    .background {
+      width: 1400px;
+      margin: 0 auto;
+      text-align: left;
+      color: #fff;
+
+      h3 {
+        &:nth-child(2) {
+          padding-bottom: 30px;
+        }
+      }
+      p {
+        display: block;
+        overflow: hidden;
+        span {
+          display: block;
+        }
+      }
+      @include textSettings;
+    }
+  }
+}

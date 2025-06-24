@@ -7,9 +7,8 @@ interface SectionProps {
 }
 
 const Section1 = ({ isLoading }: SectionProps) => {
-  const hasAnimated = useRef(false);
+  const hasMountedOnce = useRef(false);
   const sectionRef1 = useRef<HTMLDivElement>(null);
-  const txtRef = useRef<HTMLSpanElement[]>([]);
   const brandSVGRef = useRef<HTMLDivElement>(null);
   const mainbgRef = useRef<HTMLDivElement>(null);
   const subCopyRef = useRef<HTMLSpanElement>(null);
@@ -19,24 +18,11 @@ const Section1 = ({ isLoading }: SectionProps) => {
 
   const [showTextIndex, setShowTextIndex] = useState(0);
 
-  useEffect(() => {
-    if (!isLoading) return;
-
-    if (hasAnimated.current) return;
-    hasAnimated.current = true;
-
-    const timer = setInterval(() => {
-      setShowTextIndex((prev) => {
-        if (prev < 2) return prev + 1;
-        clearInterval(timer);
-        return prev;
-      });
-    }, 500);
-
-    const ctx = gsap.context(() => {
-      // gsap animate
-      const mainText = gsap.utils.toArray(txtRef.current);
-
+  const initScrollMotion = (ctx: gsap.Context) => {
+    ctx.add(() => {
+      /**
+       * add div transparent box
+       */
       if (mainbgRef.current) {
         for (let i = 0; i < 15; i++) {
           let transbox = document.createElement('div');
@@ -61,27 +47,8 @@ const Section1 = ({ isLoading }: SectionProps) => {
           },
         });
       }
-      gsap.to(subCopyRef.current, {
-        y: 0,
-        duration: 1.5,
-        opacity: 1,
-        delay: 0.5,
-        ease: 'power1.inOut',
-      });
 
-      let mainback = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef1.current!.querySelector('.line'),
-          start: 'top top',
-          end: 'bottom 40%',
-          scrub: 2,
-          //markers: true,
-          invalidateOnRefresh: true,
-          pin: true,
-          pinSpacing: false,
-        },
-      });
-      let main = gsap.timeline({
+      const tlMainPolygon = gsap.timeline({
         scrollTrigger: {
           trigger: mainbgRef.current,
           start: 'top top',
@@ -93,7 +60,7 @@ const Section1 = ({ isLoading }: SectionProps) => {
           pinSpacing: false,
         },
       });
-      main
+      tlMainPolygon
         .fromTo(
           mainInnerRef.current,
           {
@@ -104,7 +71,53 @@ const Section1 = ({ isLoading }: SectionProps) => {
           }
         )
         .to(textWrapRef.current, { scale: 0.7, y: 180, x: -260 }, '<');
+
+      /**
+       * main image pin background
+       */
+      const pinBackground = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef1.current!.querySelector('.line'),
+          //markers: true,
+          invalidateOnRefresh: true,
+          pin: true,
+          pinSpacing: false,
+        },
+      });
+
+      /**
+       * bottom sub dec copy
+       */
+      gsap.to(subCopyRef.current, {
+        y: 0,
+        yPercent: 6,
+        duration: 1.5,
+        opacity: 1,
+        delay: 0.5,
+        ease: 'power1.inOut',
+        onComplete: () => {
+          brandSVGRef.current?.classList.add('animated');
+        },
+      });
     });
+  };
+
+  useEffect(() => {
+    if (!isLoading || hasMountedOnce.current) return;
+    hasMountedOnce.current = true;
+
+    /**
+     * TextAnimationType init show animation timer
+     */
+    const timer = setInterval(() => {
+      setShowTextIndex((prev) => {
+        if (prev < 2) return prev + 1;
+        clearInterval(timer);
+        return prev;
+      });
+    }, 500);
+
+    const ctx1 = gsap.context((ctx) => initScrollMotion(ctx), sectionRef1);
 
     /**
      * 언마운트의 경우 gsap clean up
