@@ -1,37 +1,41 @@
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, Variants } from 'framer-motion';
 import React, { useRef } from 'react';
 
-const TextAnimationUp = ({ text = 'default' }: { text: string }) => {
-  const splittedText = text.split('');
+interface TextAnimteProps {
+  setInView?: boolean | undefined;
+  variants: Variants;
+  text: string;
+}
 
-  const pullupVariant = {
-    initial: { y: 10, opacity: 0 },
-    animate: (i: number) => ({
-      y: 0,
-      opacity: 1,
-      transition: {
-        delay: i * 0.05,
-      },
-    }),
-  };
-  const ref = React.useRef(null);
-  const isInView = useInView(ref, { once: false });
+const TextAnimationUp = ({
+  setInView,
+  variants,
+  text = 'default',
+}: TextAnimteProps) => {
+  const splittedText = text.split('');
+  const ref = useRef(null);
+  const isInView = useInView(ref, {
+    //margin: '100px 0px -100px 0px',
+    once: false,
+  });
+  const isView = setInView ? setInView : isInView;
 
   return (
-    <>
+    <div ref={ref} className='text-animation-up'>
       {splittedText.map((current, i) => (
-        <motion.span
-          key={i}
-          ref={ref}
-          variants={pullupVariant}
-          initial='initial'
-          animate={isInView ? 'animate' : ''}
-          custom={i}
-        >
-          {current == ' ' ? <span>&nbsp;</span> : current}
-        </motion.span>
+        <span key={i} style={{ display: 'inline-block', overflow: 'hidden' }}>
+          <motion.span
+            variants={variants}
+            initial='initial'
+            animate={isView ? 'animate' : 'initial'}
+            custom={i}
+            style={{ display: 'inline-block' }}
+          >
+            {current == ' ' ? <span>&nbsp;</span> : current}
+          </motion.span>
+        </span>
       ))}
-    </>
+    </div>
   );
 };
 export default TextAnimationUp;

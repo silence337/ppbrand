@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { Variants } from 'framer-motion';
 import TextAnimationUp from '../components/TextAnimationUp';
 
 interface SectionProps {
@@ -15,6 +16,22 @@ const Section3 = ({ isLoading }: SectionProps) => {
   const seq = useRef<{ frame: number }>({ frame: 0 });
   const topTextRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
+
+  //TextAnimationUp variants settings
+  const pullupVariant: Variants = {
+    initial: {
+      y: 100,
+      transition: { ease: [0.455, 0.03, 0.515, 0.955], duration: 0.65 },
+    },
+    animate: (i: number) => ({
+      y: 0,
+      transition: {
+        ease: [0.455, 0.03, 0.515, 0.955],
+        duration: 0.65,
+        delay: i * 0.025,
+      },
+    }),
+  };
   const frameCount = 96;
   const dataXValues = [-250, 300, -250, 300, -250, 300, -250, 300];
   const liTextContent = [
@@ -131,6 +148,7 @@ const Section3 = ({ isLoading }: SectionProps) => {
 
   const scrollMotion = (ctx: gsap.Context) => {
     ctx.add(() => {
+      if (!galleryRef.current) return;
       const liElements = gsap.utils.toArray(
         'li',
         galleryRef.current
@@ -177,10 +195,9 @@ const Section3 = ({ isLoading }: SectionProps) => {
     /**
      * 언마운트의 경우 gsap clean up
      */
-    // return () => {
-    //   ctxText.revert();
-    //   ctxGallery.revert();
-    // };
+    return () => {
+      ctx1.revert();
+    };
   }, [isLoading]);
 
   useEffect(() => {
@@ -192,11 +209,17 @@ const Section3 = ({ isLoading }: SectionProps) => {
     <section className='section3 group' ref={sectionRef3}>
       <div className='top-text' ref={topTextRef}>
         <h4>
-          <TextAnimationUp text={'Browse the new collection'} />
+          <TextAnimationUp
+            variants={pullupVariant}
+            text={'Browse the new collection'}
+          />
         </h4>
-        <p className='pintext'>
-          <TextAnimationUp text={'Timeless fashion. Effortless confidence.'} />
-        </p>
+        <div className='pintext'>
+          <TextAnimationUp
+            variants={pullupVariant}
+            text={'Timeless fashion. Effortless confidence.'}
+          />
+        </div>
       </div>
 
       <div className='sequence-wrap' ref={sequenceRef}>

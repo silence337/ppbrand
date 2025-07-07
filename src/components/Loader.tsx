@@ -26,6 +26,7 @@ const Loader = ({ onLoaded }: LoaderProps) => {
         delay: 0.5,
         ease: 'power2.inOut',
         onComplete: () => {
+          console.log('LOADER DONE');
           onLoaded();
         },
       });
@@ -51,12 +52,12 @@ const Loader = ({ onLoaded }: LoaderProps) => {
   };
 
   useEffect(() => {
-    const imgLoad: any = imagesLoaded(document.body);
-    const imgTotal: any = imgLoad.images.length;
+    const imgLoad = imagesLoaded(document.body);
+    const imgTotal: number = imgLoad.images.length;
 
     let imgLoaded: number = 0;
     let current: number = 0;
-    let progressTimer: any = null;
+    let progressTimer: ReturnType<typeof setInterval> | null = null;
 
     const updateProgress = () => {
       const target: number = (imgLoaded / imgTotal) * 100;
@@ -67,7 +68,9 @@ const Loader = ({ onLoaded }: LoaderProps) => {
       }
 
       if (current >= 100) {
-        clearInterval(progressTimer);
+        if (progressTimer !== null) {
+          clearInterval(progressTimer);
+        }
         preloaderAnimation();
       }
     };

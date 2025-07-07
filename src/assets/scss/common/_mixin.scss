@@ -1,4 +1,6 @@
 @charset "utf-8";
+@use 'sass:map';
+@use 'sass:meta';
 
 $breakpoints: (
   'mobile': (
@@ -13,13 +15,13 @@ $breakpoints: (
 );
 
 @mixin mq($name) {
-  $raw-query: map-get($breakpoints, $name);
+  $raw-query: map.get($breakpoints, $name);
 
   @if $raw-query {
     $query: if(
-      type-of($raw-query) == 'string',
+      meta.type-of($raw-query) == 'string',
       unquote($raw-query),
-      inspect($raw-query)
+      meta.inspect($raw-query)
     );
 
     @media #{$query} {

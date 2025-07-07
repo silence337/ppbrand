@@ -1,41 +1,42 @@
 $loading-font-size: 10px;
 $loading-icon-size: 24px;
 
-
 @keyframes fadein {
   from {
-    opacity:0
+    opacity: 0;
   }
   to {
-    opacity:1
+    opacity: 1;
   }
 }
 @keyframes spin {
-  0%,100% {
-    transform: rotate(0deg) scale(1)
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
   }
-  50%     {
-    transform: rotate(720deg) scale(0.5)
+  50% {
+    transform: rotate(720deg) scale(0.5);
   }
 }
 
 @keyframes pulse {
-  0%,100% {
-    letter-spacing: $loading-font-size/2;
-    left: calc(50% + (#{$loading-font-size}/2));
+  0%,
+  100% {
+    letter-spacing: calc(#{$loading-font-size} / 2);
+    left: calc(50% + (#{$loading-font-size}/ 2));
   }
   50% {
-    letter-spacing: $loading-font-size/4;
+    letter-spacing: calc(#{$loading-font-size} / 4);
     left: 50%;
   }
 }
 
-// .back-text 
+// .back-text
 @keyframes text-to {
-    0% {
-        transform: translateX(0%);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }

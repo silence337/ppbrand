@@ -1,4 +1,4 @@
-import { AnimatePresence, motion, useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import React, { useRef } from 'react';
 
 const TextAnimationType = ({ text = 'default' }: { text: string }) => {

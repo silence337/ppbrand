@@ -12,6 +12,7 @@ import Section4 from './sections/Section4';
 const App = () => {
   const [loadingComplete, setLoadingComplete] = useState(false);
   const smootherRef = useRef<ScrollSmoother | null>(null);
+  const sections = [Section1, Section2, Section3, Section4];
 
   const smotherPaused = () => {
     smootherRef.current?.paused(false);
@@ -28,6 +29,7 @@ const App = () => {
     });
 
     smootherRef.current?.paused(true);
+
     /**
      * 언마운트의 경우 gsap clean up
      */
@@ -52,10 +54,9 @@ const App = () => {
       <div id='smooth-wrapper'>
         <div id='smooth-content'>
           <div className='container'>
-            <Section1 isLoading={loadingComplete} />
-            <Section2 isLoading={loadingComplete} />
-            <Section3 isLoading={loadingComplete} />
-            <Section4 isLoading={loadingComplete} />
+            {sections.map((Section, index) => (
+              <Section key={index} isLoading={loadingComplete} />
+            ))}
           </div>
         </div>
       </div>

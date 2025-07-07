@@ -6,7 +6,7 @@ $imgUrl: '../images';
     font-size: 120px;
     line-height: 130px;
   }
-  p {
+  p.text {
     font-family: 'Montserrat';
     font-size: 30px;
   }
@@ -23,7 +23,7 @@ $imgUrl: '../images';
     position: relative;
     top: -1px;
     z-index: 2;
-    height: 1500px;
+    height: 2500px;
     padding-top: 200px;
     font-family: 'NeueMontreal-Medium';
     color: rgb(255 192 5);
@@ -58,30 +58,39 @@ $imgUrl: '../images';
     .pin-text {
       position: relative;
       width: 1400px;
-      padding-top: 300px;
+      padding-top: 100px;
       margin: 0 auto;
       text-align: left;
       font-size: 95px;
       line-height: 93px;
       font-weight: 500;
       color: #fff;
+      transform: translate(0, 300px);
+
+      .text-animation-up {
+        display: inline-block;
+        padding-right: 30px;
+      }
+
       span {
         //position: relative;
         display: inline-block;
-        opacity: 0;
-        letter-spacing: -1px;
-        &:nth-child(3),
-        &:nth-child(8) {
-          font-family: 'NeueMontreal-Bold';
-          //font-weight: 700;
-          text-decoration: underline;
-        }
+
+        //opacity: 0;
+        // opacity: 0;
+        // letter-spacing: -1px;
+        // &:nth-child(3),
+        // &:nth-child(8) {
+        //   font-family: 'NeueMontreal-Bold';
+        //   //font-weight: 700;
+        //   text-decoration: underline;
+        // }
       }
 
       .wm {
         position: absolute;
         right: 0;
-        top: 0;
+        top: 341px;
         z-index: -1;
         width: 800px;
         height: 1081px;
@@ -104,7 +113,8 @@ $imgUrl: '../images';
           //background-color: #ffb405;
           background: url(#{$imgUrl}/test.svg) no-repeat;
           background-size: cover;
-          transform: translate(400px, 0) rotate(248deg) scale(0.7);
+          transform: translate(400px, 0) rotate(248deg) scale(0.2);
+          //transform-origin: center;
           opacity: 0.2;
         }
       }
@@ -175,16 +185,23 @@ $imgUrl: '../images';
 
     h3 {
       padding-top: 300px;
-      font-size: 160px;
       font-family: 'Roboto', sans-serif;
-      line-height: 1;
       letter-spacing: -1px;
       color: #ff3100;
+
+      .text-animation-up {
+        font-size: 0;
+
+        span {
+          font-size: 160px;
+          line-height: 1.2;
+        }
+      }
     }
 
     .sbi-img {
       position: relative;
-      top: -290px;
+      top: -420px;
 
       li {
         position: absolute;
@@ -241,6 +258,7 @@ $imgUrl: '../images';
       position: relative;
       width: 1400px;
       margin: 0 auto;
+      font-family: 'Roboto', sans-serif;
     }
     .text,
     .sub-text {
@@ -264,10 +282,11 @@ $imgUrl: '../images';
       }
     }
     .sub-text {
-      width: 620px;
+      width: 580px;
       top: 150px;
       font-size: 50px;
       opacity: 0;
+      line-height: 50px;
     }
 
     .bg {
@@ -305,10 +324,24 @@ $imgUrl: '../images';
       margin: 0 auto;
       text-align: left;
       color: #fff;
+      padding-top: 15px;
 
       h3 {
         &:nth-child(2) {
-          padding-bottom: 30px;
+          padding-bottom: 10px;
+        }
+        .text-animation-up {
+          font-size: 0;
+          line-height: 0;
+
+          span {
+            margin-top: -15px;
+          }
+
+          span span {
+            font-size: 120px;
+            line-height: 162px;
+          }
         }
       }
       p {

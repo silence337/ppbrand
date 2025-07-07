@@ -16,7 +16,6 @@ $imgUrl: '../images';
 
   .top-text {
     padding-bottom: 100px;
-    font-family: 'system ui';
 
     span {
       display: inline-block;
@@ -29,7 +28,7 @@ $imgUrl: '../images';
       font-size: 79px;
       font-weight: 400;
     }
-    p.pintext {
+    .pintext {
       position: relative;
       line-height: 43px;
       overflow: hidden;

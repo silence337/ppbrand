@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import TextAnimationType from '../components/TextAnimationType';
@@ -25,13 +26,13 @@ const Section1 = ({ isLoading }: SectionProps) => {
        */
       if (mainbgRef.current) {
         for (let i = 0; i < 15; i++) {
-          let transbox = document.createElement('div');
+          const transbox = document.createElement('div');
           transbox.classList.add('transbox');
           mainbgRef.current.appendChild(transbox);
         }
-        let box = mainbgRef.current.querySelectorAll('div');
-        let px = document.documentElement.clientWidth / 5;
-        let percent = (px / document.documentElement.clientWidth) * 100;
+        const box = mainbgRef.current.querySelectorAll('div');
+        const px = document.documentElement.clientWidth / 5;
+        const percent = (px / document.documentElement.clientWidth) * 100;
 
         box.forEach((el) => {
           el.style.cssText = `width:${percent}%;height:${px}px;`;
@@ -91,7 +92,6 @@ const Section1 = ({ isLoading }: SectionProps) => {
       gsap.to(subCopyRef.current, {
         y: 0,
         yPercent: 6,
-        duration: 1.5,
         opacity: 1,
         delay: 0.5,
         ease: 'power1.inOut',

@@ -89,7 +89,7 @@ $imgUrl: '../images';
   .main-text {
     position: relative;
     z-index: 3;
-    width: 1400px;
+    max-width: 1400px;
     margin: 0 auto;
     mix-blend-mode: plus-lighter;
     font-family: 'NeueMontreal-Medium';
